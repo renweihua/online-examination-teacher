@@ -2,6 +2,7 @@
 ajax 请求函数模块
 */
 import axios from 'axios'
+import { Message, MessageBox } from 'element-ui'
 /**
  * 向外部暴漏一个函数 ajax
  * @param {*} url 请求路径，默认为空
@@ -36,7 +37,30 @@ export default function ajax(url = '', data = {}, type = 'GET') {
     })
       .catch(error => {
         // 失败回调reject()
-        reject(error)
+
+        let msg = error.msg;
+        if (error.response == undefined){
+            msg = '超时 ' + timeout + ' ms，请刷新！';
+        }else{
+            switch (error.response.status) {
+                case 404:
+                    msg = error.response.statusText;
+                    break;
+                case 401: // 认证失败
+                    msg = error.response.data.msg;
+                    break;
+                case 500: // 认证失败
+                    msg = error.response.statusText;
+                    break;
+            }
+        }
+        Message({
+            message: msg,
+            type: 'error',
+            duration: 5 * 1000
+        });
+
+        reject(error);
       })
   })
 }
