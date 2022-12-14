@@ -28,10 +28,6 @@
           登录
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">教工号: 123456</span>
-        <span> 密码: 123456</span>
-      </div>
     </el-form>
   </div>
 </template>
@@ -43,23 +39,23 @@ export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (value.length !== 6) {
-        callback(new Error('请输入6位数字的教工号'))
+      if (!value.length) {
+        callback(new Error('请输入教工号'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
+      if (value.length < 1) {
+        callback(new Error('请输入登录密码'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: '123456',
+        password: '123'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -99,7 +95,7 @@ export default {
     },
     async teacherLogin() {
       const result = await reqLogin(this.loginForm.username, this.loginForm.password)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.loading = false
         this.$store.dispatch('recordUserInfo', result.data)
         // 将userInfo存入localSession
