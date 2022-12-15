@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column label="试卷名称" align="center" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperName }}</span>
+          <span>{{ scope.row.paper_name }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="score" label="考试分数" sortable align="center">
@@ -193,7 +193,7 @@ import BookTypeOption from './components/BookTypeOption'
         this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['学号', '姓名', '试卷名称', '考试分数', '开始考试时间', '提交考卷时间', '花费时间']
-          const filterVal = ['sno', 'stuName', 'paperName', 'score', 'startTime', 'endTime', 'timeUsed']
+          const filterVal = ['sno', 'stuName', 'paper_name', 'score', 'startTime', 'endTime', 'timeUsed']
           const data = this.formatJson(filterVal, this.list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -210,7 +210,7 @@ import BookTypeOption from './components/BookTypeOption'
         let list = result.data.scoresList
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['学号', '姓名', '试卷名称', '考试分数', '开始考试时间', '提交考卷时间', '花费时间']
-          const filterVal = ['sno', 'stuName', 'paperName', 'score', 'startTime', 'endTime', 'timeUsed']
+          const filterVal = ['sno', 'stuName', 'paper_name', 'score', 'startTime', 'endTime', 'timeUsed']
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({
             header: tHeader,

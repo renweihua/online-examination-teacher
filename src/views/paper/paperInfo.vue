@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.paperName" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.paper_name" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.course_id" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="试卷名称" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperName }}</span>
+          <span>{{ scope.row.paper_name }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="langName" sortable label="所属科目" align="center" width="110">
@@ -121,8 +121,8 @@
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="试卷名称" prop="paperName">
-          <el-input v-model="temp.paperName" />
+        <el-form-item label="试卷名称" prop="paper_name">
+          <el-input v-model="temp.paper_name" />
         </el-form-item>
         <el-form-item label="考试时长" prop="paper_duration">
           <el-time-select
@@ -182,8 +182,8 @@
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="试卷名称" prop="paperName">
-          <el-input v-model="temp.paperName" />
+        <el-form-item label="试卷名称" prop="paper_name">
+          <el-input v-model="temp.paper_name" />
         </el-form-item>
         <el-form-item label="考试时长" prop="paper_duration">
           <el-time-select
@@ -269,14 +269,14 @@ import BackToTop from '@/components/BackToTop'
         listQuery: {
           page: 1,
           limit: 10,
-          paperName: undefined,
+          paper_name: undefined,
           course_id: undefined,
           paperType: undefined
         },
         langOptions: [],
         paperTypeOptions: [{ label: '随机组卷', key: '1' }, { label: '固定组卷', key: '2' }],
         temp: {
-          paperName: '',
+          paper_name: '',
           paper_duration: '',
           paper_difficulty: undefined,
           paperAttention: '',
@@ -306,7 +306,7 @@ import BackToTop from '@/components/BackToTop'
         },
         fixRules: {
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
+          paper_name: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
@@ -316,7 +316,7 @@ import BackToTop from '@/components/BackToTop'
         },
         rules: {
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
+          paper_name: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
@@ -380,7 +380,7 @@ import BackToTop from '@/components/BackToTop'
         let fillData = result.data.fillData
         //初始化数据
         this.filterText = ''
-        this.clickPaperTitle = `试卷详情：${row.paperName}`
+        this.clickPaperTitle = `试卷详情：${row.paper_name}`
         this.subPaperTitle = `试卷总分：${row.totalScore}分，试卷总题数：${row.totalNum}道。`
         this.minSubPaperTitle = `单选题${row.singleNum}道（每道${row.singleScore}分），多选题${row.multipleNum}道（每道${row.multipleScore}分），判断题${row.judgeNum}道（每道${row.judgeScore}分），填空题${row.fillNum}道（每道${row.fillScore}分）。`
         this.paperData = [{
@@ -439,7 +439,7 @@ import BackToTop from '@/components/BackToTop'
         if (this.listQuery.paperType === null || this.listQuery.paperType === undefined){
           paperType = 0
         }
-        let result = await reqSearchPapersList(this.listQuery.paperName, course_id, paperType)
+        let result = await reqSearchPapersList(this.listQuery.paper_name, course_id, paperType)
         if (result.statu === 0){
           this.total = result.data.length
           this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -451,7 +451,7 @@ import BackToTop from '@/components/BackToTop'
       },
       resetTemp(){
         this.temp = {
-          paperName: '',
+          paper_name: '',
           paper_duration: '',
           paper_difficulty: undefined,
           paperAttention: '',

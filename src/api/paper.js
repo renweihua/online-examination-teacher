@@ -3,7 +3,7 @@ import ajax from '@/config/ajax'
 // 获取全部公告信息
 export const reqGetPapersList = () => ajax('/getTeacherPapersList')
 // 获取搜素公告信息
-export const reqSearchPapersList = (paperName, course_id, paperType) => ajax('/searchPapersList', { paperName, course_id, paperType })
+export const reqSearchPapersList = (paper_name, course_id, paperType) => ajax('/searchPapersList', { paper_name, course_id, paperType })
 // 请求删除试卷
 export const reqDeletePaper = (paperId) => ajax('/deletePaper', { paperId }, 'POST')
 // 请求获取选中试卷问题详情
