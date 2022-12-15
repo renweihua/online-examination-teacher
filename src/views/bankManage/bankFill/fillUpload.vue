@@ -73,7 +73,7 @@ export default {
             fill.answerExplain = item[key]
           }
           if (key === '(必填)所属科目(Java填1,C++填2,Android填3,IOS填4,php填5,Python填6,Ruby填7,Go填8,JavaScript填9)') {
-            fill.langId = item[key]
+            fill.course_id = item[key]
           }
         })
         fillList.push(fill)

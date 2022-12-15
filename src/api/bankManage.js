@@ -4,7 +4,7 @@ const BASE_URL = process.env.BASE_API
 // 获取全部单选题信息
 export const reqGetSingleList = () => ajax(BASE_URL + '/getSingleList')
 // 获取搜素单选题信息
-export const reqSearchSingleList = (content, langId, composeFlag) => ajax(BASE_URL + '/searchSingleList', { content, langId, composeFlag })
+export const reqSearchSingleList = (content, course_id, composeFlag) => ajax(BASE_URL + '/searchSingleList', { content, course_id, composeFlag })
 // 删除单选题
 export const reqDeleteSingle = (singleId) => ajax(BASE_URL + '/deleteSingle', { singleId }, 'POST')
 // 添加单选题题目
@@ -17,7 +17,7 @@ export const reqInsertSingleList = (singleList) => ajax(BASE_URL + '/insertSingl
 // 获取全部多选题信息
 export const reqGetMultipleList = () => ajax(BASE_URL + '/getMultipleList')
 // 获取搜素多选题信息
-export const reqSearchMultipleList = (content, langId, composeFlag) => ajax(BASE_URL + '/searchMultipleList', { content, langId, composeFlag })
+export const reqSearchMultipleList = (content, course_id, composeFlag) => ajax(BASE_URL + '/searchMultipleList', { content, course_id, composeFlag })
 // 删除多选题
 export const reqDeleteMultiple = (multipleId) => ajax(BASE_URL + '/deleteMultiple', { multipleId }, 'POST')
 // 添加多选题题目
@@ -30,7 +30,7 @@ export const reqInsertMultipleList = (multipleList) => ajax(BASE_URL + '/insertM
 // 获取全部判断题信息
 export const reqGetJudgeList = () => ajax(BASE_URL + '/getJudgeList')
 // 获取搜素判断题信息
-export const reqSearchJudgeList = (content, langId, composeFlag) => ajax(BASE_URL + '/searchJudgeList', { content, langId, composeFlag })
+export const reqSearchJudgeList = (content, course_id, composeFlag) => ajax(BASE_URL + '/searchJudgeList', { content, course_id, composeFlag })
 // 删除判断题
 export const reqDeleteJudge = (judgeId) => ajax(BASE_URL + '/deleteJudge', { judgeId }, 'POST')
 // 添加判断题题目
@@ -43,7 +43,7 @@ export const reqInsertJudgeList = (judgeList) => ajax(BASE_URL + '/insertJudgeLi
 // 获取全部填空题信息
 export const reqGetFillList = () => ajax(BASE_URL + '/getFillList')
 // 获取搜素填空题信息
-export const reqSearchFillList = (content, langId, composeFlag) => ajax(BASE_URL + '/searchFillList', { content, langId, composeFlag })
+export const reqSearchFillList = (content, course_id, composeFlag) => ajax(BASE_URL + '/searchFillList', { content, course_id, composeFlag })
 // 删除填空题
 export const reqDeleteFill = (fillId) => ajax(BASE_URL + '/deleteFill', { fillId }, 'POST')
 // 添加填空题题目

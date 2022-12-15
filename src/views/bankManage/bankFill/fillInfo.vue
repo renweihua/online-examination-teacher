@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.question_content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.langId" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.course_id" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-select v-model="listQuery.composeFlag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
@@ -55,7 +55,7 @@
           <span>{{ scope.row.composeFlag === '1' ? '是' : '否' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="langId" sortable label="所属科目" align="center">
+      <el-table-column prop="course_id" sortable label="所属科目" align="center">
         <template slot-scope="scope">
           <viewer>
             <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
@@ -88,8 +88,8 @@
         <el-form-item label="答案解析">
           <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
         </el-form-item>
-        <el-form-item label="所属科目" prop="langId">
-          <el-select v-model="temp.langId" placeholder="请选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" >
+        <el-form-item label="所属科目" prop="course_id">
+          <el-select v-model="temp.course_id" placeholder="请选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" >
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -132,7 +132,7 @@ export default {
         page: 1,
         limit: 10,
         content: '',
-        langId: undefined,
+        course_id: undefined,
         composeFlag: undefined
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
@@ -141,14 +141,14 @@ export default {
         question_content: '',
         fillAnswer: '',
         answerExplain: '',
-        langId: undefined
+        course_id: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
         question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
         fillAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
-        langId: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
+        course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
       downloadLoading: false,
       myBackToTopStyle: {
@@ -210,15 +210,15 @@ export default {
     async handleFilter() {
       this.listQuery.page = 1
       this.listLoading = true
-      let langId = this.listQuery.langId
-      if (this.listQuery.langId === null || this.listQuery.langId === undefined) {
-        langId = 0
+      let course_id = this.listQuery.course_id
+      if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
+        course_id = 0
       }
       let composeFlag = this.listQuery.composeFlag
       if (this.listQuery.composeFlag === null || this.listQuery.composeFlag === undefined) {
         composeFlag = undefined
       }
-      const result = await reqSearchFillList(this.listQuery.question_content, langId, composeFlag)
+      const result = await reqSearchFillList(this.listQuery.question_content, course_id, composeFlag)
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -230,7 +230,7 @@ export default {
         question_content: '',
         fillAnswer: '',
         answerExplain: '',
-        langId: undefined
+        course_id: undefined
       }
     },
     handleCreate() {

@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.paperName" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.langId" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.course_id" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-select v-model="listQuery.paperType" placeholder="搜索试卷类型" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
@@ -116,8 +116,8 @@
     <!--固定组卷弹出框-->
     <el-dialog :visible.sync="fixedDialogFormVisible" title="固定组卷" style="margin-bottom: 20px">
       <el-form ref="fixedDataForm" :rules="fixRules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="所属科目" prop="langId">
-          <el-select v-model="temp.langId" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="fixedLangIdChange">
+        <el-form-item label="所属科目" prop="course_id">
+          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="fixedLangIdChange">
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -177,8 +177,8 @@
     <!--随机组卷弹出框-->
     <el-dialog :visible.sync="dialogFormVisible" title="随机组卷" style="margin-bottom: 20px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="所属科目" prop="langId">
-          <el-select v-model="temp.langId" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item">
+        <el-form-item label="所属科目" prop="course_id">
+          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item">
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -270,7 +270,7 @@ import BackToTop from '@/components/BackToTop'
           page: 1,
           limit: 10,
           paperName: undefined,
-          langId: undefined,
+          course_id: undefined,
           paperType: undefined
         },
         langOptions: [],
@@ -288,7 +288,7 @@ import BackToTop from '@/components/BackToTop'
           judgeNum: undefined,
           fillScore: undefined,
           fillNum: undefined,
-          langId: undefined
+          course_id: undefined
         },
         fixedDialogFormVisible: false,
         dialogFormVisible: false,
@@ -305,7 +305,7 @@ import BackToTop from '@/components/BackToTop'
           label: 'label'
         },
         fixRules: {
-          langId: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
+          course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperDuration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
@@ -315,7 +315,7 @@ import BackToTop from '@/components/BackToTop'
           fillScore: [{ required: true, message: '填空题分数为必填项', trigger: 'change' }],
         },
         rules: {
-          langId: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
+          course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperDuration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
@@ -431,15 +431,15 @@ import BackToTop from '@/components/BackToTop'
       async handleFilter(){
         this.listQuery.page = 1
         this.listLoading = true
-        let langId = this.listQuery.langId
-        if (this.listQuery.langId === null || this.listQuery.langId === undefined){
-          langId = 0
+        let course_id = this.listQuery.course_id
+        if (this.listQuery.course_id === null || this.listQuery.course_id === undefined){
+          course_id = 0
         }
         let paperType = this.listQuery.paperType
         if (this.listQuery.paperType === null || this.listQuery.paperType === undefined){
           paperType = 0
         }
-        let result = await reqSearchPapersList(this.listQuery.paperName, langId, paperType)
+        let result = await reqSearchPapersList(this.listQuery.paperName, course_id, paperType)
         if (result.statu === 0){
           this.total = result.data.length
           this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -463,7 +463,7 @@ import BackToTop from '@/components/BackToTop'
           judgeNum: undefined,
           fillScore: undefined,
           fillNum: undefined,
-          langId: undefined
+          course_id: undefined
         }
       },
       handleFixedCreate() {
@@ -477,8 +477,8 @@ import BackToTop from '@/components/BackToTop'
       },
       async fixedLangIdChange() {
         this.fixedPaperData = []
-        if (this.temp.langId !== null) {
-          let result = await reqPaperQueDetailByLangId(this.temp.langId)
+        if (this.temp.course_id !== null) {
+          let result = await reqPaperQueDetailByLangId(this.temp.course_id)
           let singleData = result.data.singleData
           let multipleData = result.data.multipleData
           let judgeData = result.data.judgeData
@@ -608,6 +608,7 @@ import BackToTop from '@/components/BackToTop'
       async randomInsertPaperInfo(){
         let arr = this.temp.paperDuration.split(":")
         this.temp.paperDuration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
+        this.temp.paper_mechanism = 0;
         let result = await reqRandomInsertPaperInfo(this.temp)
         if (result.statu === 0){
           this.dialogFormVisible = false
