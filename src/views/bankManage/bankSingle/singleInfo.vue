@@ -68,7 +68,7 @@
       </el-table-column>
       <el-table-column label="序号" prop="id" sortable align="center" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.question_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="题目内容" align="center">
@@ -90,11 +90,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="course_id" sortable label="所属科目" align="center">
-        <template slot-scope="scope">
+        <template v-if="scope.row.course" slot-scope="scope">
           <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
           </viewer>
-          <div>{{ scope.row.langName }}</div>
+          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="240">
@@ -188,8 +188,10 @@
 </template>
 
 <script>
+/* eslint-disable */
+
 import { getVueCourses } from '@/api/common'
-import { reqGetSingleList, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
+import { getQuestionBanks, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -207,7 +209,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        question_content: undefined,
+        question_content: '',
         course_id: undefined,
         compose_flag: undefined
       },
@@ -263,10 +265,11 @@ export default {
       },
     async getList() {
       this.listLoading = true
-      const result = await reqGetSingleList()
-      if (result.statu === 0) {
-        this.total = result.data.singleList.length
-        this.list = result.data.singleList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+      const result = await getQuestionBanks(this.listQuery);
+      if (result.http_status === 200) {
+        const lists = result.data;
+        this.total = lists.total
+        this.list = lists.data;
       }
       this.listLoading = false
     },
