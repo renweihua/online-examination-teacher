@@ -370,7 +370,7 @@ export default {
         'choice_G': this.temp.choice_G,
       };
       // 多选类型
-      this.temp.question_type = 1;
+      this.temp.question_type = this.listQuery.question_type;
       const result = await reqInsertMultipleInfo(temp)
       if (result.http_status === 200) {
         this.dialogFormVisible = false

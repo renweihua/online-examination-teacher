@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 import ajax from '@/config/ajax'
 
 // 获取题库列表
@@ -39,7 +42,7 @@ export const reqSearchJudgeList = (content, course_id, compose_flag) => ajax('/s
 // 删除判断题
 export const reqDeleteJudge = (judgeId) => ajax('/deleteJudge', { judgeId }, 'POST')
 // 添加判断题题目
-export const reqInsertJudgeInfo = (temp) => ajax('/insertJudgeInfo', temp, 'POST')
+export const reqInsertJudgeInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新判断题题目
 export const reqUpdateJudgeInfo = (temp) => ajax('/updateJudgeInfo', temp, 'POST')
 // 添加导入判断题Excel文件
