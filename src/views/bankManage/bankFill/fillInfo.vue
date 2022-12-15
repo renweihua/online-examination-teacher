@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.question_content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.langId" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -29,7 +29,7 @@
         <template slot-scope="scope">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="">
-              <span>{{ scope.row.content }}</span>
+              <span>{{ scope.row.question_content }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
               <span>{{ scope.row.fillAnswer }}</span>
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="题目内容" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.content }}</span>
+          <span>{{ scope.row.question_content }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="composeFlag" sortable label="是否被组成试卷" align="center">
@@ -79,8 +79,8 @@
 
     <el-dialog :visible.sync="dialogFormVisible" :title="dialogStatus">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="题目内容" prop="content">
-          <el-input v-model="temp.content" :rows="5" type="textarea" />
+        <el-form-item label="题目内容" prop="question_content">
+          <el-input v-model="temp.question_content" :rows="5" type="textarea" />
         </el-form-item>
         <el-form-item label="题目答案" prop="fillAnswer">
           <el-input v-model="temp.fillAnswer" :rows="5" type="textarea" />
@@ -131,14 +131,14 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        content: undefined,
+        content: '',
         langId: undefined,
         composeFlag: undefined
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       langOptions: [],
       temp: {
-        content: '',
+        question_content: '',
         fillAnswer: '',
         answerExplain: '',
         langId: undefined
@@ -146,7 +146,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
-        content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
+        question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
         fillAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         langId: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
@@ -218,7 +218,7 @@ export default {
       if (this.listQuery.composeFlag === null || this.listQuery.composeFlag === undefined) {
         composeFlag = undefined
       }
-      const result = await reqSearchFillList(this.listQuery.content, langId, composeFlag)
+      const result = await reqSearchFillList(this.listQuery.question_content, langId, composeFlag)
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -227,7 +227,7 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        content: '',
+        question_content: '',
         fillAnswer: '',
         answerExplain: '',
         langId: undefined
