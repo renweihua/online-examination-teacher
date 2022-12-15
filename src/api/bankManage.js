@@ -35,8 +35,6 @@ export const reqUpdateMultipleInfo = (temp) => ajax('/updateMultipleInfo', temp,
 // 添加导入多选题Excel文件
 export const reqInsertMultipleList = (multipleList) => ajax('/insertMultipleList', { multipleList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
-// 获取全部判断题信息
-export const reqGetJudgeList = () => ajax('/getJudgeList')
 // 获取搜素判断题信息
 export const reqSearchJudgeList = (content, course_id, compose_flag) => ajax('/searchJudgeList', { content, course_id, compose_flag })
 // 删除判断题

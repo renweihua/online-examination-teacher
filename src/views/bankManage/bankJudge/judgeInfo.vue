@@ -40,9 +40,9 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" prop="id" sortable align="center" width="80">
+      <el-table-column label="序号" prop="question_id" sortable align="center" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.question_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="题目内容" align="center">
@@ -56,11 +56,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="course_id" sortable label="所属科目" align="center">
-        <template slot-scope="scope">
+        <template v-if="scope.row.course" slot-scope="scope">
           <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
           </viewer>
-          <div>{{ scope.row.langName }}</div>
+          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="240">
@@ -178,10 +178,11 @@ export default {
       },
     async getList() {
       this.listLoading = true
-      const result = await reqGetJudgeList()
-      if (result.statu === 0) {
-        this.total = result.data.judgeList.length
-        this.list = result.data.judgeList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+      const result = await getQuestionBanks(this.listQuery)
+      if (result.http_status === 200) {
+        const lists = result.data;
+        this.total = lists.total
+        this.list = lists.data;
       }
       this.listLoading = false
     },
