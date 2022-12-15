@@ -98,7 +98,7 @@ export default {
             multiple.question_answer = item[key]
           }
           if (key === '(选填)答案解析') {
-            multiple.answerExplain = item[key]
+            multiple.answer_explain = item[key]
           }
           if (key === '(必填)所属科目(Java填1,C++填2,Android填3,IOS填4,php填5,Python填6,Ruby填7,Go填8,JavaScript填9)') {
             multiple.course_id = item[key]

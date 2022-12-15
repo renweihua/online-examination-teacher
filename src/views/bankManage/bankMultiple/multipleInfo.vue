@@ -61,7 +61,7 @@
               <span>{{ scope.row.question_answer.join('') }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
-              <span>{{ scope.row.answerExplain || '暂无解析' }}</span>
+              <span>{{ scope.row.answer_explain || '暂无解析' }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -163,7 +163,7 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="答案解析">
-          <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
+          <el-input v-model="temp.answer_explain" :rows="5" type="textarea" />
         </el-form-item>
         <el-form-item label="所属科目" prop="course_id">
           <el-select v-model="temp.course_id" placeholder="请选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" >
@@ -225,7 +225,7 @@ export default {
         choiceF: '',
         choiceG: '',
         question_answer: [],
-        answerExplain: '',
+        answer_explain: '',
         course_id: undefined
       },
       dialogFormVisible: false,
@@ -328,7 +328,7 @@ export default {
         choiceF: '',
         choiceG: '',
         question_answer: [],
-        answerExplain: '',
+        answer_explain: '',
         course_id: undefined
       }
     },
