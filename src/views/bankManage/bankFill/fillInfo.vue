@@ -32,7 +32,7 @@
               <span>{{ scope.row.question_content }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
-              <span>{{ scope.row.fillAnswer }}</span>
+              <span>{{ scope.row.question_answer }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
               <span>{{ scope.row.answerExplain || '暂无解析' }}</span>
@@ -82,8 +82,8 @@
         <el-form-item label="题目内容" prop="question_content">
           <el-input v-model="temp.question_content" :rows="5" type="textarea" />
         </el-form-item>
-        <el-form-item label="题目答案" prop="fillAnswer">
-          <el-input v-model="temp.fillAnswer" :rows="5" type="textarea" />
+        <el-form-item label="题目答案" prop="question_answer">
+          <el-input v-model="temp.question_answer" :rows="5" type="textarea" />
         </el-form-item>
         <el-form-item label="答案解析">
           <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
@@ -139,7 +139,7 @@ export default {
       langOptions: [],
       temp: {
         question_content: '',
-        fillAnswer: '',
+        question_answer: '',
         answerExplain: '',
         course_id: undefined
       },
@@ -147,7 +147,7 @@ export default {
       dialogStatus: '',
       rules: {
         question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
-        fillAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
+        question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -228,7 +228,7 @@ export default {
     resetTemp() {
       this.temp = {
         question_content: '',
-        fillAnswer: '',
+        question_answer: '',
         answerExplain: '',
         course_id: undefined
       }

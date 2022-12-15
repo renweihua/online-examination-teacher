@@ -32,7 +32,7 @@
               <span>{{ scope.row.question_content }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
-              <span>{{ scope.row.judgeAnswer === 'T' ? '正确' : '错误' }}</span>
+              <span>{{ scope.row.question_answer === 'T' ? '正确' : '错误' }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
               <span>{{ scope.row.answerExplain || '暂无解析' }}</span>
@@ -82,9 +82,9 @@
         <el-form-item label="题目内容" prop="question_content">
           <el-input v-model="temp.question_content" :rows="5" type="textarea" />
         </el-form-item>
-        <el-form-item label="题目答案" prop="judgeAnswer">
-          <el-radio v-model="temp.judgeAnswer" label="T">正确</el-radio>
-          <el-radio v-model="temp.judgeAnswer" label="F">错误</el-radio>
+        <el-form-item label="题目答案" prop="question_answer">
+          <el-radio v-model="temp.question_answer" label="T">正确</el-radio>
+          <el-radio v-model="temp.question_answer" label="F">错误</el-radio>
         </el-form-item>
         <el-form-item label="答案解析">
           <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
@@ -140,7 +140,7 @@ export default {
       langOptions: [],
       temp: {
         question_content: '',
-        judgeAnswer: '',
+        question_answer: '',
         answerExplain: '',
         course_id: undefined
       },
@@ -148,7 +148,7 @@ export default {
       dialogStatus: '',
       rules: {
         question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
-        judgeAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
+        question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -229,7 +229,7 @@ export default {
     resetTemp() {
       this.temp = {
         question_content: '',
-        judgeAnswer: '',
+        question_answer: '',
         answerExplain: '',
         course_id: undefined
       }

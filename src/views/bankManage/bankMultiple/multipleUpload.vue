@@ -95,7 +95,7 @@ export default {
             multiple.choiceG = item[key]
           }
           if (key === '(必填)题目答案(填写对应答案字符)') {
-            multiple.multipleAnswer = item[key]
+            multiple.question_answer = item[key]
           }
           if (key === '(选填)答案解析') {
             multiple.answerExplain = item[key]

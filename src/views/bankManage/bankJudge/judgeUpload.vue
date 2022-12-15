@@ -67,7 +67,7 @@ export default {
             judge.judgeContent = item[key]
           }
           if (key === '(必填)题目答案(正确填写T,错误填写F)') {
-            judge.judgeAnswer = item[key]
+            judge.question_answer = item[key]
           }
           if (key === '(选填)答案解析') {
             judge.answerExplain = item[key]

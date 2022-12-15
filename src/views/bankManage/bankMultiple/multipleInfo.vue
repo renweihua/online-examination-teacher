@@ -58,7 +58,7 @@
               <span>{{ scope.row.choiceG }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
-              <span>{{ scope.row.multipleAnswer.join('') }}</span>
+              <span>{{ scope.row.question_answer.join('') }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
               <span>{{ scope.row.answerExplain || '暂无解析' }}</span>
@@ -151,8 +151,8 @@
         <el-form-item label="选项G">
           <el-input v-model="temp.choiceG" placeholder="内容必须以字符G加:开头" />
         </el-form-item>
-        <el-form-item label="题目答案" prop="multipleAnswer">
-          <el-checkbox-group v-model="temp.multipleAnswer">
+        <el-form-item label="题目答案" prop="question_answer">
+          <el-checkbox-group v-model="temp.question_answer">
             <el-checkbox label="A">A</el-checkbox>
             <el-checkbox label="B">B</el-checkbox>
             <el-checkbox label="C">C</el-checkbox>
@@ -224,7 +224,7 @@ export default {
         choiceE: '',
         choiceF: '',
         choiceG: '',
-        multipleAnswer: [],
+        question_answer: [],
         answerExplain: '',
         course_id: undefined
       },
@@ -236,7 +236,7 @@ export default {
         choiceB: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
         choiceC: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
         choiceD: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
-        multipleAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
+        question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -282,7 +282,7 @@ export default {
     },
     async handleUpdateMultiple() {
       const temp = this.temp
-      temp.multipleAnswer = temp.multipleAnswer.join('')
+      temp.question_answer = temp.question_answer.join('')
       const result = await reqUpdateMultipleInfo(temp)
       if (result.statu === 0) {
         this.dialogFormVisible = false
@@ -327,7 +327,7 @@ export default {
         choiceE: '',
         choiceF: '',
         choiceG: '',
-        multipleAnswer: [],
+        question_answer: [],
         answerExplain: '',
         course_id: undefined
       }
@@ -349,7 +349,7 @@ export default {
     },
     async insertMultipleInfo() {
       const temp = this.temp
-      temp.multipleAnswer = temp.multipleAnswer.join('')
+      temp.question_answer = temp.question_answer.join('')
       const result = await reqInsertMultipleInfo(temp)
       if (result.statu === 0) {
         this.dialogFormVisible = false

@@ -67,7 +67,7 @@ export default {
             fill.fillContent = item[key]
           }
           if (key === '(必填)题目答案(填写正确答案字符串)') {
-            fill.fillAnswer = item[key]
+            fill.question_answer = item[key]
           }
           if (key === '(选填)答案解析') {
             fill.answerExplain = item[key]
