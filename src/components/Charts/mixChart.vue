@@ -54,7 +54,7 @@ export default {
         if (!this.snoData.length) {
           this.titleText = '该试卷暂无人参加考试'
         } else {
-          this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
+          this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
         }
         this.chart.clear()
         this.initChart()
@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     this.getChartData(() => {
-      this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
+      this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
       this.initChart()
     })
   },

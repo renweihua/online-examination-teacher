@@ -49,9 +49,9 @@
           <div>{{ scope.row.langName }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="paperDuration" sortable label="考试时长" align="center" width="110">
+      <el-table-column prop="paper_duration" sortable label="考试时长" align="center" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperDuration/60 }}分钟</span>
+          <span>{{ scope.row.paper_duration/60 }}分钟</span>
         </template>
       </el-table-column>
       <el-table-column prop="paperDifficulty" sortable label="难度系数" align="center" width="142">
@@ -124,9 +124,9 @@
         <el-form-item label="试卷名称" prop="paperName">
           <el-input v-model="temp.paperName" />
         </el-form-item>
-        <el-form-item label="考试时长" prop="paperDuration">
+        <el-form-item label="考试时长" prop="paper_duration">
           <el-time-select
-            v-model="temp.paperDuration"
+            v-model="temp.paper_duration"
             :picker-options="{
               start: '00:10',
               step: '00:10',
@@ -185,9 +185,9 @@
         <el-form-item label="试卷名称" prop="paperName">
           <el-input v-model="temp.paperName" />
         </el-form-item>
-        <el-form-item label="考试时长" prop="paperDuration">
+        <el-form-item label="考试时长" prop="paper_duration">
           <el-time-select
-            v-model="temp.paperDuration"
+            v-model="temp.paper_duration"
             :picker-options="{
               start: '00:10',
               step: '00:10',
@@ -277,7 +277,7 @@ import BackToTop from '@/components/BackToTop'
         paperTypeOptions: [{ label: '随机组卷', key: '1' }, { label: '固定组卷', key: '2' }],
         temp: {
           paperName: '',
-          paperDuration: '',
+          paper_duration: '',
           paperDifficulty: undefined,
           paperAttention: '',
           singleScore: undefined,
@@ -307,7 +307,7 @@ import BackToTop from '@/components/BackToTop'
         fixRules: {
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paperDuration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
+          paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
           multipleScore: [{ required: true, message: '多选题分数为必填项', trigger: 'change' }],
@@ -317,7 +317,7 @@ import BackToTop from '@/components/BackToTop'
         rules: {
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paperDuration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
+          paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
           paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
           singleNum: [{ required: true, message: '单选题数目为必填项', trigger: 'change' }],
@@ -452,7 +452,7 @@ import BackToTop from '@/components/BackToTop'
       resetTemp(){
         this.temp = {
           paperName: '',
-          paperDuration: '',
+          paper_duration: '',
           paperDifficulty: undefined,
           paperAttention: '',
           singleScore: undefined,
@@ -570,8 +570,8 @@ import BackToTop from '@/components/BackToTop'
         })
       },
       async fixedInsertPaperInfo() {
-        let arr = this.temp.paperDuration.split(":")
-        this.temp.paperDuration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
+        let arr = this.temp.paper_duration.split(":")
+        this.temp.paper_duration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
         let result = await reqFixedInsertPaperInfo(this.temp)
         if (result.statu === 0){
           this.fixedDialogFormVisible = false
@@ -606,8 +606,8 @@ import BackToTop from '@/components/BackToTop'
         })
       },
       async randomInsertPaperInfo(){
-        let arr = this.temp.paperDuration.split(":")
-        this.temp.paperDuration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
+        let arr = this.temp.paper_duration.split(":")
+        this.temp.paper_duration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
         this.temp.paper_mechanism = 0;
         let result = await reqRandomInsertPaperInfo(this.temp)
         if (result.statu === 0){
