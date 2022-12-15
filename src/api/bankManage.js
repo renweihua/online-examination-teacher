@@ -1,7 +1,15 @@
 import ajax from '@/config/ajax'
 
-// 获取全部单选题信息
+// 获取题库列表
 export const getQuestionBanks = (params) => ajax('/question_bank', params)
+
+
+
+
+
+
+
+
 // 获取搜素单选题信息
 export const reqSearchSingleList = (content, course_id, compose_flag) => ajax('/searchSingleList', { content, course_id, compose_flag })
 // 删除单选题
@@ -13,8 +21,6 @@ export const reqUpdateSingleInfo = (temp) => ajax('/updateSingleInfo', temp, 'PO
 // 添加导入单选题Excel文件
 export const reqInsertSingleList = (singleList) => ajax('/insertSingleList', { singleList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
-// 获取全部多选题信息
-export const reqGetMultipleList = () => ajax('/getMultipleList')
 // 获取搜素多选题信息
 export const reqSearchMultipleList = (content, course_id, compose_flag) => ajax('/searchMultipleList', { content, course_id, compose_flag })
 // 删除多选题

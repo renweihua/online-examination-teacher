@@ -66,7 +66,7 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" prop="id" sortable align="center" width="80">
+      <el-table-column label="序号" prop="question_id" sortable align="center" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.question_id }}</span>
         </template>
@@ -206,6 +206,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        // 单选
+        question_type: 0,
         page: 1,
         limit: 10,
         question_content: '',
@@ -366,7 +368,7 @@ export default {
         'choice_G': this.temp.choice_G,
       };
       // 单选类型
-      this.temp.question_type = 0;
+      this.temp.question_type = this.listQuery.question_type;
       const result = await reqInsertSingleInfo(this.temp)
       if (result.http_status === 200) {
         this.dialogFormVisible = false
