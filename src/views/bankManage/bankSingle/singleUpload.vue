@@ -95,7 +95,7 @@ export default {
             single.choiceG = item[key]
           }
           if (key === '(必填)题目答案(填写对应答案字符)') {
-            single.singleAnswer = item[key]
+            single.question_answer = item[key]
           }
           if (key === '(选填)答案解析') {
             single.answerExplain = item[key]

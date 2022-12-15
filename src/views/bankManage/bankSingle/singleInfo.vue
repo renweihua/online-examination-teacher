@@ -58,7 +58,7 @@
               <span>{{ scope.row.choiceG }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
-              <span>{{ scope.row.singleAnswer }}</span>
+              <span>{{ scope.row.question_answer }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
               <span>{{ scope.row.answerExplain || '暂无解析' }}</span>
@@ -151,14 +151,14 @@
         <el-form-item label="选项G">
           <el-input v-model="temp.choiceG" placeholder="内容必须以字符G加:开头" />
         </el-form-item>
-        <el-form-item label="题目答案" prop="singleAnswer">
-          <el-radio v-model="temp.singleAnswer" label="A">A</el-radio>
-          <el-radio v-model="temp.singleAnswer" label="B">B</el-radio>
-          <el-radio v-model="temp.singleAnswer" label="C">C</el-radio>
-          <el-radio v-model="temp.singleAnswer" label="D">D</el-radio>
-          <el-radio v-if="temp.choiceE" v-model="temp.singleAnswer" label="E" >E</el-radio>
-          <el-radio v-if="temp.choiceF" v-model="temp.singleAnswer" label="F" >F</el-radio>
-          <el-radio v-if="temp.choiceG" v-model="temp.singleAnswer" label="G" >G</el-radio>
+        <el-form-item label="题目答案" prop="question_answer">
+          <el-radio v-model="temp.question_answer" label="A">A</el-radio>
+          <el-radio v-model="temp.question_answer" label="B">B</el-radio>
+          <el-radio v-model="temp.question_answer" label="C">C</el-radio>
+          <el-radio v-model="temp.question_answer" label="D">D</el-radio>
+          <el-radio v-if="temp.choiceE" v-model="temp.question_answer" label="E" >E</el-radio>
+          <el-radio v-if="temp.choiceF" v-model="temp.question_answer" label="F" >F</el-radio>
+          <el-radio v-if="temp.choiceG" v-model="temp.question_answer" label="G" >G</el-radio>
         </el-form-item>
         <el-form-item label="答案解析">
           <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
@@ -222,7 +222,7 @@ export default {
         choiceE: '',
         choiceF: '',
         choiceG: '',
-        singleAnswer: '',
+        question_answer: '',
         answerExplain: '',
         langId: undefined
       },
@@ -234,7 +234,7 @@ export default {
         choiceB: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
         choiceC: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
         choiceD: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
-        singleAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
+        question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         langId: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -323,7 +323,7 @@ export default {
         choiceE: '',
         choiceF: '',
         choiceG: '',
-        singleAnswer: '',
+        question_answer: '',
         answerExplain: '',
         langId: undefined
       }
