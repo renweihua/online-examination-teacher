@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 ajax 请求函数模块
 */
