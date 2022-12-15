@@ -5,7 +5,7 @@
       <el-select v-model="listQuery.course_id" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
-      <el-select v-model="listQuery.composeFlag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.compose_flag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in composeFlagOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -50,9 +50,9 @@
           <span>{{ scope.row.question_content }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="composeFlag" sortable label="是否被组成试卷" align="center">
+      <el-table-column prop="compose_flag" sortable label="是否被组成试卷" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.composeFlag === '1' ? '是' : '否' }}</span>
+          <span>{{ scope.row.compose_flag === '1' ? '是' : '否' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="course_id" sortable label="所属科目" align="center">
@@ -133,7 +133,7 @@ export default {
         limit: 10,
         content: '',
         course_id: undefined,
-        composeFlag: undefined
+        compose_flag: undefined
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       langOptions: [],
@@ -214,11 +214,11 @@ export default {
       if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
         course_id = 0
       }
-      let composeFlag = this.listQuery.composeFlag
-      if (this.listQuery.composeFlag === null || this.listQuery.composeFlag === undefined) {
-        composeFlag = undefined
+      let compose_flag = this.listQuery.compose_flag
+      if (this.listQuery.compose_flag === null || this.listQuery.compose_flag === undefined) {
+        compose_flag = undefined
       }
-      const result = await reqSearchFillList(this.listQuery.question_content, course_id, composeFlag)
+      const result = await reqSearchFillList(this.listQuery.question_content, course_id, compose_flag)
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -274,7 +274,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (row.composeFlag === '1') {
+        if (row.compose_flag === '1') {
           this.$message({
             message: '该题目已被组成试卷，无法删除',
             type: 'error'

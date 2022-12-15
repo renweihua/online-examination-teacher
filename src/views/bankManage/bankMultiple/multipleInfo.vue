@@ -5,7 +5,7 @@
       <el-select v-model="listQuery.course_id" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
-      <el-select v-model="listQuery.composeFlag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.compose_flag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in composeFlagOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -36,17 +36,17 @@
                 <img :src="scope.row.pictureSrc">
               </viewer>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceA" label="">
-              <span>{{ scope.row.choiceA }}</span>
+            <el-form-item v-if="scope.row.choice_A" label="">
+              <span>{{ scope.row.choice_A }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceB" label="">
-              <span>{{ scope.row.choiceB }}</span>
+            <el-form-item v-if="scope.row.choice_B" label="">
+              <span>{{ scope.row.choice_B }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceC" label="">
-              <span>{{ scope.row.choiceC }}</span>
+            <el-form-item v-if="scope.row.choice_C" label="">
+              <span>{{ scope.row.choice_C }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceD" label="">
-              <span>{{ scope.row.choiceD }}</span>
+            <el-form-item v-if="scope.row.choice_D" label="">
+              <span>{{ scope.row.choice_D }}</span>
             </el-form-item>
             <el-form-item v-if="scope.row.choiceE" label="">
               <span>{{ scope.row.choiceE }}</span>
@@ -84,9 +84,9 @@
           <span v-else>暂无</span>
         </template>
       </el-table-column>
-      <el-table-column prop="composeFlag" sortable label="是否被组成试卷" align="center">
+      <el-table-column prop="compose_flag" sortable label="是否被组成试卷" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.composeFlag === '1' ? '是' : '否' }}</span>
+          <span>{{ scope.row.compose_flag === '1' ? '是' : '否' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="course_id" sortable label="所属科目" align="center">
@@ -130,17 +130,17 @@
             删除
           </el-button>
         </el-form-item>
-        <el-form-item label="选项A" prop="choiceA">
-          <el-input v-model="temp.choiceA" placeholder="内容必须以字符A加:开头" />
+        <el-form-item label="选项A" prop="choice_A">
+          <el-input v-model="temp.choice_A" placeholder="内容必须以字符A加:开头" />
         </el-form-item>
-        <el-form-item label="选项B" prop="choiceB">
-          <el-input v-model="temp.choiceB" placeholder="内容必须以字符B加:开头" />
+        <el-form-item label="选项B" prop="choice_B">
+          <el-input v-model="temp.choice_B" placeholder="内容必须以字符B加:开头" />
         </el-form-item>
-        <el-form-item label="选项C" prop="choiceC">
-          <el-input v-model="temp.choiceC" placeholder="内容必须以字符C加:开头" />
+        <el-form-item label="选项C" prop="choice_C">
+          <el-input v-model="temp.choice_C" placeholder="内容必须以字符C加:开头" />
         </el-form-item>
-        <el-form-item label="选项D" prop="choiceD">
-          <el-input v-model="temp.choiceD" placeholder="内容必须以字符D加:开头" />
+        <el-form-item label="选项D" prop="choice_D">
+          <el-input v-model="temp.choice_D" placeholder="内容必须以字符D加:开头" />
         </el-form-item>
         <el-form-item label="选项E">
           <el-input v-model="temp.choiceE" placeholder="内容必须以字符E加:开头" />
@@ -210,17 +210,17 @@ export default {
         limit: 10,
         question_content: undefined,
         course_id: undefined,
-        composeFlag: undefined
+        compose_flag: undefined
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       langOptions: [],
       temp: {
         question_content: '',
         pictureSrc: '',
-        choiceA: '',
-        choiceB: '',
-        choiceC: '',
-        choiceD: '',
+        choice_A: '',
+        choice_B: '',
+        choice_C: '',
+        choice_D: '',
         choiceE: '',
         choiceF: '',
         choiceG: '',
@@ -232,10 +232,10 @@ export default {
       dialogStatus: '',
       rules: {
         question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
-        choiceA: [{ required: true, message: '选项A为必填项', trigger: 'change' }],
-        choiceB: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
-        choiceC: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
-        choiceD: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
+        choice_A: [{ required: true, message: '选项A为必填项', trigger: 'change' }],
+        choice_B: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
+        choice_C: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
+        choice_D: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
         question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
@@ -305,11 +305,11 @@ export default {
       if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
         course_id = 0
       }
-      let composeFlag = this.listQuery.composeFlag
-      if (this.listQuery.composeFlag === null || this.listQuery.composeFlag === undefined) {
-        composeFlag = undefined
+      let compose_flag = this.listQuery.compose_flag
+      if (this.listQuery.compose_flag === null || this.listQuery.compose_flag === undefined) {
+        compose_flag = undefined
       }
-      const result = await reqSearchMultipleList(this.listQuery.question_content, course_id, composeFlag)
+      const result = await reqSearchMultipleList(this.listQuery.question_content, course_id, compose_flag)
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
@@ -320,10 +320,10 @@ export default {
       this.temp = {
         question_content: '',
         pictureSrc: '',
-        choiceA: '',
-        choiceB: '',
-        choiceC: '',
-        choiceD: '',
+        choice_A: '',
+        choice_B: '',
+        choice_C: '',
+        choice_D: '',
         choiceE: '',
         choiceF: '',
         choiceG: '',
@@ -375,7 +375,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (row.composeFlag === '1') {
+        if (row.compose_flag === '1') {
           this.$message({
             message: '该题目已被组成试卷，无法删除',
             type: 'error'
