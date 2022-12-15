@@ -54,10 +54,10 @@
           <span>{{ scope.row.paper_duration/60 }}分钟</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paperDifficulty" sortable label="难度系数" align="center" width="142">
+      <el-table-column prop="paper_difficulty" sortable label="难度系数" align="center" width="142">
         <template slot-scope="scope">
           <el-rate
-            v-model="scope.row.paperDifficulty"
+            v-model="scope.row.paper_difficulty"
             disabled
             text-color="#ff9900"
             score-template="{value}"/>
@@ -134,8 +134,8 @@
             }"
             placeholder="选择时间(时:分)"/>
         </el-form-item>
-        <el-form-item label="难度系数" prop="paperDifficulty">
-          <el-rate v-model="temp.paperDifficulty" style="margin-top: 10px"/>
+        <el-form-item label="难度系数" prop="paper_difficulty">
+          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px"/>
         </el-form-item>
         <el-form-item label="注意事项" prop="paperAttention">
           <el-input v-model="temp.paperAttention" type="textarea" />
@@ -195,8 +195,8 @@
             }"
             placeholder="选择时间(时:分)"/>
         </el-form-item>
-        <el-form-item label="难度系数" prop="paperDifficulty">
-          <el-rate v-model="temp.paperDifficulty" style="margin-top: 10px"/>
+        <el-form-item label="难度系数" prop="paper_difficulty">
+          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px"/>
         </el-form-item>
         <el-form-item label="注意事项" prop="paperAttention">
           <el-input v-model="temp.paperAttention" type="textarea" />
@@ -278,7 +278,7 @@ import BackToTop from '@/components/BackToTop'
         temp: {
           paperName: '',
           paper_duration: '',
-          paperDifficulty: undefined,
+          paper_difficulty: undefined,
           paperAttention: '',
           singleScore: undefined,
           singleNum: undefined,
@@ -308,7 +308,7 @@ import BackToTop from '@/components/BackToTop'
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
-          paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
+          paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
           multipleScore: [{ required: true, message: '多选题分数为必填项', trigger: 'change' }],
           judgeScore: [{ required: true, message: '判断题分数为必填项', trigger: 'change' }],
@@ -318,7 +318,7 @@ import BackToTop from '@/components/BackToTop'
           course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paperName: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
           paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
-          paperDifficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
+          paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
           singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
           singleNum: [{ required: true, message: '单选题数目为必填项', trigger: 'change' }],
           multipleScore: [{ required: true, message: '多选题分数为必填项', trigger: 'change' }],
@@ -453,7 +453,7 @@ import BackToTop from '@/components/BackToTop'
         this.temp = {
           paperName: '',
           paper_duration: '',
-          paperDifficulty: undefined,
+          paper_difficulty: undefined,
           paperAttention: '',
           singleScore: undefined,
           singleNum: undefined,
