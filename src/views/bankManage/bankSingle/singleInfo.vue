@@ -189,7 +189,6 @@
 
 <script>
 /* eslint-disable */
-
 import { getVueCourses } from '@/api/common'
 import { getQuestionBanks, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
@@ -356,6 +355,7 @@ export default {
       })
     },
     async insertSingleInfo() {
+      // 选项配置
       this.temp.question_options = {
         'choice_A': this.temp.choice_A,
         'choice_B': this.temp.choice_B,

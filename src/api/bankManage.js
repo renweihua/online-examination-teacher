@@ -20,7 +20,7 @@ export const reqSearchMultipleList = (content, course_id, compose_flag) => ajax(
 // 删除多选题
 export const reqDeleteMultiple = (multipleId) => ajax('/deleteMultiple', { multipleId }, 'POST')
 // 添加多选题题目
-export const reqInsertMultipleInfo = (temp) => ajax('/insertMultipleInfo', temp, 'POST')
+export const reqInsertMultipleInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新多选题题目
 export const reqUpdateMultipleInfo = (temp) => ajax('/updateMultipleInfo', temp, 'POST')
 // 添加导入多选题Excel文件

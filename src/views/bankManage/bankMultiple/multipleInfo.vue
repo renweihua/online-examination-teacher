@@ -48,14 +48,14 @@
             <el-form-item v-if="scope.row.choice_D" label="">
               <span>{{ scope.row.choice_D }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceE" label="">
-              <span>{{ scope.row.choiceE }}</span>
+            <el-form-item v-if="scope.row.choice_E" label="">
+              <span>{{ scope.row.choice_E }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceF" label="">
-              <span>{{ scope.row.choiceF }}</span>
+            <el-form-item v-if="scope.row.choice_F" label="">
+              <span>{{ scope.row.choice_F }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceG" label="">
-              <span>{{ scope.row.choiceG }}</span>
+            <el-form-item v-if="scope.row.choice_G" label="">
+              <span>{{ scope.row.choice_G }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
               <span>{{ scope.row.question_answer.join('') }}</span>
@@ -143,13 +143,13 @@
           <el-input v-model="temp.choice_D" placeholder="内容必须以字符D加:开头" />
         </el-form-item>
         <el-form-item label="选项E">
-          <el-input v-model="temp.choiceE" placeholder="内容必须以字符E加:开头" />
+          <el-input v-model="temp.choice_E" placeholder="内容必须以字符E加:开头" />
         </el-form-item>
         <el-form-item label="选项F">
-          <el-input v-model="temp.choiceF" placeholder="内容必须以字符F加:开头" />
+          <el-input v-model="temp.choice_F" placeholder="内容必须以字符F加:开头" />
         </el-form-item>
         <el-form-item label="选项G">
-          <el-input v-model="temp.choiceG" placeholder="内容必须以字符G加:开头" />
+          <el-input v-model="temp.choice_G" placeholder="内容必须以字符G加:开头" />
         </el-form-item>
         <el-form-item label="题目答案" prop="question_answer">
           <el-checkbox-group v-model="temp.question_answer">
@@ -157,9 +157,9 @@
             <el-checkbox label="B">B</el-checkbox>
             <el-checkbox label="C">C</el-checkbox>
             <el-checkbox label="D">D</el-checkbox>
-            <el-checkbox v-if="temp.choiceE" label="E">E</el-checkbox>
-            <el-checkbox v-if="temp.choiceF" label="F">F</el-checkbox>
-            <el-checkbox v-if="temp.choiceG" label="G">G</el-checkbox>
+            <el-checkbox v-if="temp.choice_E" label="E">E</el-checkbox>
+            <el-checkbox v-if="temp.choice_F" label="F">F</el-checkbox>
+            <el-checkbox v-if="temp.choice_G" label="G">G</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="答案解析">
@@ -190,6 +190,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+import { getVueCourses } from '@/api/common'
 import { reqGetMultipleList, reqSearchMultipleList, reqDeleteMultiple, reqInsertMultipleInfo, reqUpdateMultipleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -221,9 +223,9 @@ export default {
         choice_B: '',
         choice_C: '',
         choice_D: '',
-        choiceE: '',
-        choiceF: '',
-        choiceG: '',
+        choice_E: '',
+        choice_F: '',
+        choice_G: '',
         question_answer: [],
         answer_explain: '',
         course_id: undefined
@@ -252,14 +254,18 @@ export default {
     }
   },
   created() {
+      this.vueCourses();
     this.getList()
   },
   methods: {
+      async vueCourses(){
+        let result = await getVueCourses();
+        this.langOptions = result.data;
+      },
     async getList() {
       this.listLoading = true
       const result = await reqGetMultipleList()
       if (result.statu === 0) {
-        this.langOptions = result.data.langOptions
         this.total = result.data.multipleList.length
         this.list = result.data.multipleList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
       }
@@ -324,9 +330,9 @@ export default {
         choice_B: '',
         choice_C: '',
         choice_D: '',
-        choiceE: '',
-        choiceF: '',
-        choiceG: '',
+        choice_E: '',
+        choice_F: '',
+        choice_G: '',
         question_answer: [],
         answer_explain: '',
         course_id: undefined
@@ -350,19 +356,29 @@ export default {
     async insertMultipleInfo() {
       const temp = this.temp
       temp.question_answer = temp.question_answer.join('')
+      // 选项配置
+      this.temp.question_options = {
+        'choice_A': this.temp.choice_A,
+        'choice_B': this.temp.choice_B,
+        'choice_C': this.temp.choice_C,
+        'choice_D': this.temp.choice_D,
+        'choice_E': this.temp.choice_E,
+        'choice_F': this.temp.choice_F,
+        'choice_G': this.temp.choice_G,
+      };
+      // 多选类型
+      this.temp.question_type = 1;
       const result = await reqInsertMultipleInfo(temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$notify({
-          title: '成功',
-          message: '添加成功',
+          message: result.msg,
           type: 'success',
           duration: 2000
         })
         this.getList()
       } else {
         this.$notify({
-          title: '失败',
           message: result.msg,
           type: 'error',
           duration: 2000
