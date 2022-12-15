@@ -113,6 +113,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+import { getVueCourses } from '@/api/common'
 import { reqGetFillList, reqSearchFillList, reqDeleteFill, reqInsertFillInfo, reqUpdateFillInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -129,9 +131,11 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        // 填空题
+        question_type: 2,
         page: 1,
         limit: 10,
-        content: '',
+        question_content: '',
         course_id: undefined,
         compose_flag: undefined
       },
@@ -163,14 +167,18 @@ export default {
     }
   },
   created() {
+      this.vueCourses();
     this.getList()
   },
   methods: {
+      async vueCourses(){
+        let result = await getVueCourses();
+        this.langOptions = result.data;
+      },
     async getList() {
       this.listLoading = true
       const result = await reqGetFillList()
       if (result.statu === 0) {
-        this.langOptions = result.data.langOptions
         this.total = result.data.fillList.length
         this.list = result.data.fillList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
       }
@@ -249,19 +257,19 @@ export default {
       })
     },
     async insertFillInfo() {
+      // 题库类型
+      this.temp.question_type = this.listQuery.question_type;
       const result = await reqInsertFillInfo(this.temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$notify({
-          title: '成功',
-          message: '添加成功',
+          message: result.msg,
           type: 'success',
           duration: 2000
         })
         this.getList()
       } else {
         this.$notify({
-          title: '失败',
           message: result.msg,
           type: 'error',
           duration: 2000

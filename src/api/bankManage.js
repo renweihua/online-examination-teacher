@@ -53,7 +53,7 @@ export const reqSearchFillList = (content, course_id, compose_flag) => ajax('/se
 // 删除填空题
 export const reqDeleteFill = (fillId) => ajax('/deleteFill', { fillId }, 'POST')
 // 添加填空题题目
-export const reqInsertFillInfo = (temp) => ajax('/insertFillInfo', temp, 'POST')
+export const reqInsertFillInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新填空题题目
 export const reqUpdateFillInfo = (temp) => ajax('/updateFillInfo', temp, 'POST')
 // 添加导入填空题Excel文件
