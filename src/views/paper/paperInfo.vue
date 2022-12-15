@@ -247,6 +247,10 @@
 <script>
 /* eslint-disable */
 import { reqGetPapersList, reqSearchPapersList, reqDeletePaper, reqPaperQueDetailByPaperId, reqRandomInsertPaperInfo, reqFixedInsertPaperInfo, reqPaperQueDetailByLangId } from '@/api/paper'
+import { getVueCourses } from '@/api/common'
+
+
+
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -345,9 +349,14 @@ import BackToTop from '@/components/BackToTop'
       }
     },
     created() {
+      this.vueCourses();
       this.getList()
     },
     methods: {
+      async vueCourses(){
+        let result = await getVueCourses();
+        this.langOptions = result.data;
+      },
       async getList() {
         this.listLoading = true
         let result = await reqGetPapersList()
