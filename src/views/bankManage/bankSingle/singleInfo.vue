@@ -36,26 +36,26 @@
                 <img :src="scope.row.pictureSrc">
               </viewer>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceA" label="">
-              <span>{{ scope.row.choiceA }}</span>
+            <el-form-item v-if="scope.row.choice_A" label="">
+              <span>{{ scope.row.choice_A }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceB" label="">
-              <span>{{ scope.row.choiceB }}</span>
+            <el-form-item v-if="scope.row.choice_B" label="">
+              <span>{{ scope.row.choice_B }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceC" label="">
-              <span>{{ scope.row.choiceC }}</span>
+            <el-form-item v-if="scope.row.choice_C" label="">
+              <span>{{ scope.row.choice_C }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceD" label="">
-              <span>{{ scope.row.choiceD }}</span>
+            <el-form-item v-if="scope.row.choice_D" label="">
+              <span>{{ scope.row.choice_D }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceE" label="">
-              <span>{{ scope.row.choiceE }}</span>
+            <el-form-item v-if="scope.row.choice_E" label="">
+              <span>{{ scope.row.choice_E }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceF" label="">
-              <span>{{ scope.row.choiceF }}</span>
+            <el-form-item v-if="scope.row.choice_F" label="">
+              <span>{{ scope.row.choice_F }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choiceG" label="">
-              <span>{{ scope.row.choiceG }}</span>
+            <el-form-item v-if="scope.row.choice_G" label="">
+              <span>{{ scope.row.choice_G }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
               <span>{{ scope.row.question_answer }}</span>
@@ -130,35 +130,35 @@
             删除
           </el-button>
         </el-form-item>
-        <el-form-item label="选项A" prop="choiceA">
-          <el-input v-model="temp.choiceA" placeholder="内容必须以字符A加:开头" />
+        <el-form-item label="选项A" prop="choice_A">
+          <el-input v-model="temp.choice_A" placeholder="内容必须以字符A加:开头" />
         </el-form-item>
-        <el-form-item label="选项B" prop="choiceB">
-          <el-input v-model="temp.choiceB" placeholder="内容必须以字符B加:开头" />
+        <el-form-item label="选项B" prop="choice_B">
+          <el-input v-model="temp.choice_B" placeholder="内容必须以字符B加:开头" />
         </el-form-item>
-        <el-form-item label="选项C" prop="choiceC">
-          <el-input v-model="temp.choiceC" placeholder="内容必须以字符C加:开头" />
+        <el-form-item label="选项C" prop="choice_C">
+          <el-input v-model="temp.choice_C" placeholder="内容必须以字符C加:开头" />
         </el-form-item>
-        <el-form-item label="选项D" prop="choiceD">
-          <el-input v-model="temp.choiceD" placeholder="内容必须以字符D加:开头" />
+        <el-form-item label="选项D" prop="choice_D">
+          <el-input v-model="temp.choice_D" placeholder="内容必须以字符D加:开头" />
         </el-form-item>
         <el-form-item label="选项E">
-          <el-input v-model="temp.choiceE" placeholder="内容必须以字符E加:开头" />
+          <el-input v-model="temp.choice_E" placeholder="内容必须以字符E加:开头" />
         </el-form-item>
         <el-form-item label="选项F">
-          <el-input v-model="temp.choiceF" placeholder="内容必须以字符F加:开头" />
+          <el-input v-model="temp.choice_F" placeholder="内容必须以字符F加:开头" />
         </el-form-item>
         <el-form-item label="选项G">
-          <el-input v-model="temp.choiceG" placeholder="内容必须以字符G加:开头" />
+          <el-input v-model="temp.choice_G" placeholder="内容必须以字符G加:开头" />
         </el-form-item>
         <el-form-item label="题目答案" prop="question_answer">
           <el-radio v-model="temp.question_answer" label="A">A</el-radio>
           <el-radio v-model="temp.question_answer" label="B">B</el-radio>
           <el-radio v-model="temp.question_answer" label="C">C</el-radio>
           <el-radio v-model="temp.question_answer" label="D">D</el-radio>
-          <el-radio v-if="temp.choiceE" v-model="temp.question_answer" label="E" >E</el-radio>
-          <el-radio v-if="temp.choiceF" v-model="temp.question_answer" label="F" >F</el-radio>
-          <el-radio v-if="temp.choiceG" v-model="temp.question_answer" label="G" >G</el-radio>
+          <el-radio v-if="temp.choice_E" v-model="temp.question_answer" label="E" >E</el-radio>
+          <el-radio v-if="temp.choice_F" v-model="temp.question_answer" label="F" >F</el-radio>
+          <el-radio v-if="temp.choice_G" v-model="temp.question_answer" label="G" >G</el-radio>
         </el-form-item>
         <el-form-item label="答案解析">
           <el-input v-model="temp.answer_explain" :rows="5" type="textarea" />
@@ -188,6 +188,7 @@
 </template>
 
 <script>
+import { getVueCourses } from '@/api/common'
 import { reqGetSingleList, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -215,13 +216,15 @@ export default {
       temp: {
         question_content: '',
         pictureSrc: '',
-        choiceA: '',
-        choiceB: '',
-        choiceC: '',
-        choiceD: '',
-        choiceE: '',
-        choiceF: '',
-        choiceG: '',
+        choice_A: '',
+        choice_B: '',
+        choice_C: '',
+        choice_D: '',
+        choice_E: '',
+        choice_F: '',
+        choice_G: '',
+        question_options: {
+        },
         question_answer: '',
         answer_explain: '',
         course_id: undefined
@@ -230,10 +233,10 @@ export default {
       dialogStatus: '',
       rules: {
         question_content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
-        choiceA: [{ required: true, message: '选项A为必填项', trigger: 'change' }],
-        choiceB: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
-        choiceC: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
-        choiceD: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
+        choice_A: [{ required: true, message: '选项A为必填项', trigger: 'change' }],
+        choice_B: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
+        choice_C: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
+        choice_D: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
         question_answer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
         course_id: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
       },
@@ -250,14 +253,18 @@ export default {
     }
   },
   created() {
+      this.vueCourses();
     this.getList()
   },
   methods: {
+      async vueCourses(){
+        let result = await getVueCourses();
+        this.langOptions = result.data;
+      },
     async getList() {
       this.listLoading = true
       const result = await reqGetSingleList()
       if (result.statu === 0) {
-        this.langOptions = result.data.langOptions
         this.total = result.data.singleList.length
         this.list = result.data.singleList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
       }
@@ -316,13 +323,15 @@ export default {
       this.temp = {
         question_content: '',
         pictureSrc: '',
-        choiceA: '',
-        choiceB: '',
-        choiceC: '',
-        choiceD: '',
-        choiceE: '',
-        choiceF: '',
-        choiceG: '',
+        choice_A: '',
+        choice_B: '',
+        choice_C: '',
+        choice_D: '',
+        choice_E: '',
+        choice_F: '',
+        choice_G: '',
+        question_options: {
+        },
         question_answer: '',
         answer_explain: '',
         course_id: undefined
@@ -344,19 +353,28 @@ export default {
       })
     },
     async insertSingleInfo() {
+      this.temp.question_options = {
+        'choice_A': this.temp.choice_A,
+        'choice_B': this.temp.choice_B,
+        'choice_C': this.temp.choice_C,
+        'choice_D': this.temp.choice_D,
+        'choice_E': this.temp.choice_E,
+        'choice_F': this.temp.choice_F,
+        'choice_G': this.temp.choice_G,
+      };
+      // 单选类型
+      this.temp.question_type = 0;
       const result = await reqInsertSingleInfo(this.temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$notify({
-          title: '成功',
-          message: '添加成功',
+          message: result.msg,
           type: 'success',
           duration: 2000
         })
         this.getList()
       } else {
         this.$notify({
-          title: '失败',
           message: result.msg,
           type: 'error',
           duration: 2000
