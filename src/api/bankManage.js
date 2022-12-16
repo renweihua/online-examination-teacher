@@ -46,8 +46,6 @@ export const reqUpdateJudgeInfo = (temp) => ajax('/updateJudgeInfo', temp, 'POST
 // 添加导入判断题Excel文件
 export const reqInsertJudgeList = (judgeList) => ajax('/insertJudgeList', { judgeList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
-// 获取全部填空题信息
-export const reqGetFillList = () => ajax('/getFillList')
 // 获取搜素填空题信息
 export const reqSearchFillList = (content, course_id, compose_flag) => ajax('/searchFillList', { content, course_id, compose_flag })
 // 删除填空题

@@ -40,9 +40,9 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" prop="id" sortable align="center" width="80">
+      <el-table-column label="序号" prop="question_id" sortable align="center" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.question_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="题目内容" align="center">
@@ -56,11 +56,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="course_id" sortable label="所属科目" align="center">
-        <template slot-scope="scope">
+        <template v-if="scope.row.course" slot-scope="scope">
           <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
           </viewer>
-          <div>{{ scope.row.langName }}</div>
+          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="240">
@@ -115,7 +115,7 @@
 <script>
 /* eslint-disable */
 import { getVueCourses } from '@/api/common'
-import { reqGetFillList, reqSearchFillList, reqDeleteFill, reqInsertFillInfo, reqUpdateFillInfo } from '@/api/bankManage'
+import { getQuestionBanks, reqDeleteFill, reqInsertFillInfo, reqUpdateFillInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -177,10 +177,11 @@ export default {
       },
     async getList() {
       this.listLoading = true
-      const result = await reqGetFillList()
-      if (result.statu === 0) {
-        this.total = result.data.fillList.length
-        this.list = result.data.fillList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+      const result = await getQuestionBanks(this.listQuery)
+      if (result.http_status === 200) {
+        const lists = result.data;
+        this.total = lists.total
+        this.list = lists.data;
       }
       this.listLoading = false
     },
@@ -218,18 +219,11 @@ export default {
     async handleFilter() {
       this.listQuery.page = 1
       this.listLoading = true
-      let course_id = this.listQuery.course_id
-      if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
-        course_id = 0
-      }
-      let compose_flag = this.listQuery.compose_flag
-      if (this.listQuery.compose_flag === null || this.listQuery.compose_flag === undefined) {
-        compose_flag = undefined
-      }
-      const result = await reqSearchFillList(this.listQuery.question_content, course_id, compose_flag)
-      if (result.statu === 0) {
-        this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+      const result = await getQuestionBanks(this.listQuery)
+      if (result.http_status === 200) {
+        const lists = result.data;
+        this.total = lists.total
+        this.list = lists.data;
       }
       this.listLoading = false
     },
