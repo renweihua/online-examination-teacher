@@ -45,6 +45,14 @@
           <span>{{ scope.row.question_id }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="course_id" sortable label="所属科目" align="center">
+        <template v-if="scope.row.course" slot-scope="scope">
+          <viewer v-if="scope.row.course.course_cover">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
+          </viewer>
+          <div>{{ scope.row.course.course_name }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="题目内容" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.question_content }}</span>
@@ -53,14 +61,6 @@
       <el-table-column prop="compose_flag" sortable label="是否被组成试卷" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.compose_flag === '1' ? '是' : '否' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="course_id" sortable label="所属科目" align="center">
-        <template v-if="scope.row.course" slot-scope="scope">
-          <viewer>
-            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
-          </viewer>
-          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="240">
@@ -219,14 +219,7 @@ export default {
     },
     async handleFilter() {
       this.listQuery.page = 1
-      this.listLoading = true
-      const result = await getQuestionBanks(this.listQuery)
-      if (result.http_status === 200) {
-        const lists = result.data;
-        this.total = lists.total
-        this.list = lists.data;
-      }
-      this.listLoading = false
+      this.getList();
     },
     resetTemp() {
       this.temp = {

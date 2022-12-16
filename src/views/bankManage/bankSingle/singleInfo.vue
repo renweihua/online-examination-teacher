@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.question_content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.search" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.course_id" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -71,6 +71,14 @@
           <span>{{ scope.row.question_id }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="course_id" sortable label="所属科目" align="center">
+        <template v-if="scope.row.course" slot-scope="scope">
+          <viewer v-if="scope.row.course.course_cover">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
+          </viewer>
+          <div>{{ scope.row.course.course_name }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="题目内容" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.question_content }}</span>
@@ -87,14 +95,6 @@
       <el-table-column prop="compose_flag" sortable label="是否被组成试卷" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.compose_flag === '1' ? '是' : '否' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="course_id" sortable label="所属科目" align="center">
-        <template v-if="scope.row.course" slot-scope="scope">
-          <viewer>
-            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
-          </viewer>
-          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="240">
@@ -190,7 +190,7 @@
 <script>
 /* eslint-disable */
 import { getVueCourses } from '@/api/common'
-import { getQuestionBanks, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
+import { getQuestionBanks, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -210,9 +210,9 @@ export default {
         question_type: 0,
         page: 1,
         limit: 10,
-        question_content: '',
-        course_id: undefined,
-        compose_flag: undefined
+        search: '',
+        course_id: '',
+        compose_flag: ''
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       langOptions: [],
@@ -230,7 +230,7 @@ export default {
         },
         question_answer: '',
         answer_explain: '',
-        course_id: undefined
+        course_id: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -307,21 +307,7 @@ export default {
     },
     async handleFilter() {
       this.listQuery.page = 1
-      this.listLoading = true
-      let course_id = this.listQuery.course_id
-      if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
-        course_id = 0
-      }
-      let compose_flag = this.listQuery.compose_flag
-      if (this.listQuery.compose_flag === null || this.listQuery.compose_flag === undefined) {
-        compose_flag = undefined
-      }
-      const result = await reqSearchSingleList(this.listQuery.question_content, course_id, compose_flag)
-      if (result.statu === 0) {
-        this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
-      }
-      this.listLoading = false
+      this.getList();
     },
     resetTemp() {
       this.temp = {
@@ -338,7 +324,7 @@ export default {
         },
         question_answer: '',
         answer_explain: '',
-        course_id: undefined
+        course_id: 0
       }
     },
     handleCreate() {
