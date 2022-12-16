@@ -190,7 +190,7 @@
 <script>
 /* eslint-disable */
 import { getVueCourses } from '@/api/common'
-import { getQuestionBanks, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
+import { getQuestionBanks, deleteQuestion, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -390,9 +390,8 @@ export default {
       })
     },
     async handleDeleteQue(row) {
-      const singleId = row.singleId
-      const result = await reqDeleteSingle(singleId)
-      if (result.statu === 0) {
+      const result = await deleteQuestion({question_id: row.question_id})
+      if (result.http_status === 200) {
         this.$message({
           message: result.msg,
           type: 'success'

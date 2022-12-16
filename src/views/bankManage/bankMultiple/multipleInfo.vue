@@ -192,7 +192,7 @@
 <script>
 /* eslint-disable */
 import { getVueCourses } from '@/api/common'
-import { getQuestionBanks, reqDeleteMultiple, reqInsertMultipleInfo, reqUpdateMultipleInfo } from '@/api/bankManage'
+import { getQuestionBanks, deleteQuestion, reqInsertMultipleInfo, reqUpdateMultipleInfo } from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -392,9 +392,8 @@ export default {
       })
     },
     async handleDeleteQue(row) {
-      const multipleId = row.multipleId
-      const result = await reqDeleteMultiple(multipleId)
-      if (result.statu === 0) {
+      const result = await deleteQuestion({question_id: row.question_id})
+      if (result.http_status === 200) {
         this.$message({
           message: result.msg,
           type: 'success'

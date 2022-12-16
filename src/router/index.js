@@ -219,8 +219,8 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'http://maweitao.top',
-        meta: { title: '个人主页', icon: 'link' }
+        path: 'https://bbs.cnpscy.com',
+        meta: { title: '小丑路人社区', icon: 'link' }
       }
     ]
   },
