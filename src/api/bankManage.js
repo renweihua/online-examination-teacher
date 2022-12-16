@@ -2,11 +2,15 @@
 
 
 import ajax from '@/config/ajax'
+import request from '@/utils/request'
+
 
 // 获取题库列表
-export const getQuestionBanks = (params) => ajax('/question_bank', params)
-
-
+export const getQuestionBanks = (data) => request({
+	url: `/question_bank`,
+	method: 'get',
+    data
+})
 
 
 
