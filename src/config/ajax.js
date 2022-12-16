@@ -33,6 +33,10 @@ export default function ajax(url = '', data = {}, type = 'GET') {
       }
       // 发送 get 请求
       promise = axios.get(url)
+    } else if (type === 'PUT') {
+      promise = axios.put(url, data)
+    }  else if (type === 'DELETE') {
+      promise = axios.delete(url, data)
     } else {
       // 发送 post 请求
       promise = axios.post(url, data)

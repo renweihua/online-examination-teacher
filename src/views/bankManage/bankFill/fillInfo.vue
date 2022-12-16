@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.question_content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.search" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.course_id" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -135,9 +135,10 @@ export default {
         question_type: 2,
         page: 1,
         limit: 10,
-        question_content: '',
-        course_id: undefined,
-        compose_flag: undefined
+        search: '',
+        // 为空，主要是vue渲染
+        course_id: '',
+        compose_flag: ''
       },
       composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       langOptions: [],
@@ -145,7 +146,7 @@ export default {
         question_content: '',
         question_answer: '',
         answer_explain: '',
-        course_id: undefined
+        course_id: 0,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -202,7 +203,7 @@ export default {
     },
     async handleUpdateFill() {
       const result = await reqUpdateFillInfo(this.temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$message({
           message: result.msg,
@@ -232,7 +233,7 @@ export default {
         question_content: '',
         question_answer: '',
         answer_explain: '',
-        course_id: undefined
+        course_id: 0
       }
     },
     handleCreate() {

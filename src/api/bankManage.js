@@ -20,7 +20,7 @@ export const reqDeleteSingle = (singleId) => ajax('/deleteSingle', { singleId },
 // 添加单选题题目
 export const reqInsertSingleInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新单选题题目
-export const reqUpdateSingleInfo = (temp) => ajax('/updateSingleInfo', temp, 'POST')
+export const reqUpdateSingleInfo = (temp) => ajax('/question_bank/update', temp, 'PUT')
 // 添加导入单选题Excel文件
 export const reqInsertSingleList = (singleList) => ajax('/insertSingleList', { singleList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ export const reqDeleteMultiple = (multipleId) => ajax('/deleteMultiple', { multi
 // 添加多选题题目
 export const reqInsertMultipleInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新多选题题目
-export const reqUpdateMultipleInfo = (temp) => ajax('/updateMultipleInfo', temp, 'POST')
+export const reqUpdateMultipleInfo = (temp) => ajax('/question_bank/update', temp, 'PUT')
 // 添加导入多选题Excel文件
 export const reqInsertMultipleList = (multipleList) => ajax('/insertMultipleList', { multipleList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ export const reqDeleteJudge = (judgeId) => ajax('/deleteJudge', { judgeId }, 'PO
 // 添加判断题题目
 export const reqInsertJudgeInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新判断题题目
-export const reqUpdateJudgeInfo = (temp) => ajax('/updateJudgeInfo', temp, 'POST')
+export const reqUpdateJudgeInfo = (temp) => ajax('/question_bank/update', temp, 'PUT')
 // 添加导入判断题Excel文件
 export const reqInsertJudgeList = (judgeList) => ajax('/insertJudgeList', { judgeList }, 'POST')
 // ---------------------------------------------------------------------------------------------------------------
@@ -53,6 +53,6 @@ export const reqDeleteFill = (fillId) => ajax('/deleteFill', { fillId }, 'POST')
 // 添加填空题题目
 export const reqInsertFillInfo = (temp) => ajax('/question_bank/create', temp, 'POST')
 // 更新填空题题目
-export const reqUpdateFillInfo = (temp) => ajax('/updateFillInfo', temp, 'POST')
+export const reqUpdateFillInfo = (temp) => ajax('/question_bank/update', temp, 'PUT')
 // 添加导入填空题Excel文件
 export const reqInsertFillList = (fillList) => ajax('/inserFillList', { fillList }, 'POST')
