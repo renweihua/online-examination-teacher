@@ -36,29 +36,29 @@
                 <img :src="scope.row.pictureSrc">
               </viewer>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_A" label="">
-              <span>{{ scope.row.choice_A }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_A" label="">
+              <span>A:{{ scope.row.question_options.choice_A }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_B" label="">
-              <span>{{ scope.row.choice_B }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_B" label="">
+              <span>B:{{ scope.row.question_options.choice_B }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_C" label="">
-              <span>{{ scope.row.choice_C }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_C" label="">
+              <span>C:{{ scope.row.question_options.choice_C }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_D" label="">
-              <span>{{ scope.row.choice_D }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_D" label="">
+              <span>D:{{ scope.row.question_options.choice_D }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_E" label="">
-              <span>{{ scope.row.choice_E }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_E" label="">
+              <span>E:{{ scope.row.question_options.choice_E }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_F" label="">
-              <span>{{ scope.row.choice_F }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_F" label="">
+              <span>F:{{ scope.row.question_options.choice_F }}</span>
             </el-form-item>
-            <el-form-item v-if="scope.row.choice_G" label="">
-              <span>{{ scope.row.choice_G }}</span>
+            <el-form-item v-if="scope.row.question_options.choice_G" label="">
+              <span>G:{{ scope.row.question_options.choice_G }}</span>
             </el-form-item>
             <el-form-item label="题目答案：">
-              <span>{{ scope.row.question_answer.join('') }}</span>
+              <span>{{ scope.row.question_answer.split('') }}</span>
             </el-form-item>
             <el-form-item label="答案解析：">
               <span>{{ scope.row.answer_explain || '暂无解析' }}</span>
