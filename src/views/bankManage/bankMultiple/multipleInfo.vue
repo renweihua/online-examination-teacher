@@ -276,6 +276,33 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // 复制对象
+
+      // 转换为数组
+      this.temp.question_answer = this.temp.question_answer.split('')
+
+      if(this.temp.question_options.choice_A){
+        this.temp.choice_A = this.temp.question_options.choice_A;
+      }
+      if(this.temp.question_options.choice_B){
+        this.temp.choice_B = this.temp.question_options.choice_B;
+      }
+      if(this.temp.question_options.choice_C){
+        this.temp.choice_C = this.temp.question_options.choice_C;
+      }
+      if(this.temp.question_options.choice_D){
+        this.temp.choice_D = this.temp.question_options.choice_D;
+      }
+      if(this.temp.question_options.choice_E){
+        this.temp.choice_E = this.temp.question_options.choice_E;
+      }
+      if(this.temp.question_options.choice_F){
+        this.temp.choice_F = this.temp.question_options.choice_F;
+      }
+      if(this.temp.question_options.choice_G){
+        this.temp.choice_G = this.temp.question_options.choice_G;
+      }
+
+
       this.dialogStatus = '编辑题目'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -293,7 +320,7 @@ export default {
       const temp = this.temp
       temp.question_answer = temp.question_answer.join('')
       const result = await reqUpdateMultipleInfo(temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$message({
           message: result.msg,
