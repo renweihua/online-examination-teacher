@@ -26,7 +26,7 @@ service.interceptors.request.use(
             // config.data = JSON.stringify(config.data)
         }
     }
-    console.log(config.data);
+    // console.log(config.data);
     return config
   },
   error => {
@@ -82,11 +82,14 @@ service.interceptors.response.use(
             case 404:
                 msg = error.response.statusText;
                 break;
-            case 401: // 认证失败
-                msg = error.response.data.msg;
+            case 400:
+                msg = error.response.data.msg || error.response.statusText;
                 break;
-            case 500: // 认证失败
-                msg = error.response.statusText;
+            case 401: // 认证失败
+                msg = error.response.data.msg || error.response.statusText;
+                break;
+            case 500:
+                msg = error.response.data.msg || error.response.statusText;
                 break;
         }
     }
