@@ -11,7 +11,13 @@ export const getPapers = (data) => request({
 // 请求删除试卷
 export const reqDeletePaper = (paperId) => ajax('/deletePaper', { paperId }, 'POST')
 // 请求获取选中试卷问题详情
-export const reqPaperQueDetailByPaperId = (paperId, totalNum) => ajax('/getPaperQueDetailByPaperId', { paperId, totalNum })
+export const reqPaperQueDetailByPaperId = (paper_id) => request({
+    url: `/paper/detail`,
+    method: 'get',
+    params: {
+        paper_id
+    },
+})
 // 请求随机组卷，插入试卷数据，即发布试卷
 export const reqRandomInsertPaperInfo = (data) => request({
     url: `/paper/create`,

@@ -460,7 +460,8 @@
       async seePaperDetail(row, column, event) {
         // 阻止鼠标右键默认事件
         event.preventDefault()
-        let result = await reqPaperQueDetailByPaperId(row.paperId, row.total_num)
+        let result = await reqPaperQueDetailByPaperId(row.paper_id)
+        console.log(result);
         let singleData = result.data.singleData
         let multipleData = result.data.multipleData
         let judgeData = result.data.judgeData
@@ -469,8 +470,24 @@
         this.filterText = ''
         this.clickPaperTitle = `试卷详情：${row.paper_name}`
         this.subPaperTitle = `试卷总分：${row.total_score}分，试卷总题数：${row.total_num}道。`
-        this.minSubPaperTitle =
-          `单选题${row.singleNum}道（每道${row.singleScore}分），多选题${row.multipleNum}道（每道${row.multipleScore}分），判断题${row.judgeNum}道（每道${row.judgeScore}分），填空题${row.fillNum}道（每道${row.fillScore}分）。`
+
+        this.minSubPaperTitle = '';
+        if(row.paper_config.single.num){
+          this.minSubPaperTitle += `单选题${row.paper_config.single.num}道（每道${row.paper_config.single.score}分）`;
+        }
+        if(row.paper_config.multiple.num){
+          if(this.minSubPaperTitle) this.minSubPaperTitle += '，';
+          this.minSubPaperTitle += `多选题${row.paper_config.multiple.num}道（每道${row.paper_config.multiple.score}分）`;
+        }
+        if(row.paper_config.judge.num){
+          if(this.minSubPaperTitle) this.minSubPaperTitle += '，';
+          this.minSubPaperTitle += `判断题${row.paper_config.judge.num}道（每道${row.paper_config.judge.score}分）`;
+        }
+        if(row.paper_config.fill.num){
+          if(this.minSubPaperTitle) this.minSubPaperTitle += '，';
+          this.minSubPaperTitle += `填空题${row.paper_config.fill.num}道（每道${row.paper_config.fill.score}分）`;
+        }
+        
         this.paperData = [{
           id: 1,
           label: '单选题列表',
