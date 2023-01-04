@@ -207,7 +207,7 @@ export default {
     },
     async handleUpdateJudge() {
       const result = await reqUpdateJudgeInfo(this.temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$message({
           message: result.msg,

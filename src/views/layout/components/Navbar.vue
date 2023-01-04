@@ -70,7 +70,7 @@ export default {
     },
     async logout() {
       const result = await reqLogOut()
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         // 移除localStorage中teacherInfo
         removeStore('teacherInfo')
         // 重置vuex中userInfo

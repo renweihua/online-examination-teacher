@@ -85,7 +85,7 @@ export default {
     // 插入数据库填空题表
     async insertFillList(fillList) {
       const result = await reqInsertFillList(fillList)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.$message({
           message: result.msg,
           type: 'success'

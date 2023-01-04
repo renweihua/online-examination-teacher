@@ -113,7 +113,7 @@ export default {
     // 插入数据库多选题表
     async insertMultipleList(multipleList) {
       const result = await reqInsertMultipleList(multipleList)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.$message({
           message: result.msg,
           type: 'success'

@@ -113,7 +113,7 @@ export default {
     // 插入数据库单选题表
     async insertSingleList(singleList) {
       const result = await reqInsertSingleList(singleList)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.$message({
           message: result.msg,
           type: 'success'

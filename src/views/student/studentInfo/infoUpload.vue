@@ -87,7 +87,7 @@ export default {
     // 插入数据库学生信息表
     async insertStudentInfoList(studentList) {
       const result = await reqInsertStudentInfoList(studentList)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.tableHeader = ['学号', '姓名', '性别', '上传状态']
         this.tableData = result.data.responseList
         this.allItemCount = result.data.allItemCount

@@ -42,7 +42,7 @@ export default {
     async getList() {
       this.listLoading = true
       const result = await reqGetPapersList()
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.paperNameOptions = result.data.papersList
       }
       // 延迟0秒等待请求数据
