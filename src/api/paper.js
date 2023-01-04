@@ -9,7 +9,13 @@ export const getPapers = (data) => request({
     params: data,
 })
 // 请求删除试卷
-export const reqDeletePaper = (paperId) => ajax('/deletePaper', { paperId }, 'POST')
+export const reqDeletePaper = (paper_id) => request({
+    url: `/paper/delete`,
+    method: 'delete',
+    params: {
+        paper_id
+    },
+})
 // 请求获取选中试卷问题详情
 export const reqPaperQueDetailByPaperId = (paper_id) => request({
     url: `/paper/detail`,

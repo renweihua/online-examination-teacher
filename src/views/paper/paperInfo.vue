@@ -518,10 +518,10 @@
         }).catch(() => {})
       },
       async deletePaper(row) {
-        let result = await reqDeletePaper(row.paperId)
-        if (result.statu === 0) {
+        let result = await reqDeletePaper(row.paper_id)
+        if (result.http_status === 200) {
           this.$message({
-            message: '删除成功',
+            message: result.msg,
             type: 'success'
           })
           this.getList()
