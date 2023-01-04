@@ -1,36 +1,34 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.paper_name" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.course_id" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-input v-model="listQuery.paper_name" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;"
+        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.course_id" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;"
+        class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
-      <el-select v-model="listQuery.paperType" placeholder="搜索试卷类型" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.paper_mechanism" placeholder="搜索试卷类型" clearable
+        style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in paperTypeOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
-      <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search"
+        @click="handleFilter">
         搜索
       </el-button>
-      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary" icon="el-icon-edit-outline" @click="handleFixedCreate">
+      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary"
+        icon="el-icon-edit-outline" @click="handleFixedCreate">
         固定组卷
       </el-button>
-      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary"
+        icon="el-icon-edit" @click="handleCreate">
         随机组卷
       </el-button>
-      <div><span style="color: #FF0000"><i class="el-icon-warning" style="margin-right: 10px"/>鼠标右键单击选中行可查看试卷详情</span></div>
+      <div><span style="color: #FF0000"><i class="el-icon-warning" style="margin-right: 10px" />鼠标右键单击选中行可查看试卷详情</span>
+      </div>
     </div>
 
-    <el-table
-      v-loading="listLoading"
-      :key="tableKey"
-      :data="list"
-      :default-sort = "{prop: 'id', order: 'ascending'}"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @row-contextmenu="seePaperDetail"
-    >
+    <el-table v-loading="listLoading" :key="tableKey" :data="list" :default-sort="{prop: 'id', order: 'ascending'}"
+      border fit highlight-current-row style="width: 100%;" @row-contextmenu="seePaperDetail">
       <el-table-column label="序号" prop="id" sortable align="center" width="90">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -56,21 +54,17 @@
       </el-table-column>
       <el-table-column prop="paper_difficulty" sortable label="难度系数" align="center" width="142">
         <template slot-scope="scope">
-          <el-rate
-            v-model="scope.row.paper_difficulty"
-            disabled
-            text-color="#ff9900"
-            score-template="{value}"/>
+          <el-rate v-model="scope.row.paper_difficulty" disabled text-color="#ff9900" score-template="{value}" />
         </template>
       </el-table-column>
       <el-table-column label="考试注意事项" width="120" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperAttention || '暂无考试注意事项' }}</span>
+          <span>{{ scope.row.paper_attention || '暂无考试注意事项' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paperType" sortable label="试卷类型" align="center" width="110">
+      <el-table-column prop="paper_mechanism" sortable label="试卷类型" align="center" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperType===1?'随机组卷':'固定组卷' }}</span>
+          <span>{{ scope.row.paper_mechanism===1?'随机组卷':'固定组卷' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="totalScore" sortable label="试卷总分" align="center" width="110">
@@ -78,14 +72,14 @@
           <span>{{ scope.row.totalScore }}分</span>
         </template>
       </el-table-column>
-      <el-table-column prop="participateNum" sortable label="已参加人数" align="center" width="120">
+      <el-table-column prop="student_count" sortable label="已参加人数" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.participateNum }}人</span>
+          <span>{{ scope.row.student_count }}人</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paperCreateTime" sortable label="试卷创建时间" align="center" width="155">
+      <el-table-column prop="created_time" sortable label="试卷创建时间" align="center" width="155">
         <template slot-scope="scope">
-          <span >{{ scope.row.paperCreateTime | date-format }}</span>
+          <span>{{ scope.row.created_time | date-format }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="122">
@@ -97,27 +91,25 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
 
     <!--查看试卷详情弹出框-->
     <el-dialog :visible.sync="paperDetailDialogFormVisible" :title="clickPaperTitle" style="margin-bottom: 20px">
       <div style="height: 50px;line-height: 50px;margin-top: -35px;color: #ff9e8c">{{ subPaperTitle }}</div>
       <div style="height: 50px;line-height: 50px;margin-top: -20px;color: #00d2c9">{{ minSubPaperTitle }}</div>
       <el-input v-model="filterText" placeholder="查找试卷问题关键字" style="margin-bottom:30px;" />
-      <el-tree
-        ref="paperDataTree"
-        :data="paperData"
-        :props="defaultProps"
-        :filter-node-method="filterNode"
-        class="filter-tree"
-      />
+      <el-tree ref="paperDataTree" :data="paperData" :props="defaultProps" :filter-node-method="filterNode"
+        class="filter-tree" />
     </el-dialog>
 
     <!--固定组卷弹出框-->
     <el-dialog :visible.sync="fixedDialogFormVisible" title="固定组卷" style="margin-bottom: 20px">
-      <el-form ref="fixedDataForm" :rules="fixRules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form ref="fixedDataForm" :rules="fixRules" :model="temp" label-position="left" label-width="100px"
+        style="width: 400px; margin-left:50px;">
         <el-form-item label="所属科目" prop="course_id">
-          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="fixedLangIdChange">
+          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;"
+            class="filter-item" @change="fixedLangIdChange">
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -125,43 +117,34 @@
           <el-input v-model="temp.paper_name" />
         </el-form-item>
         <el-form-item label="考试时长" prop="paper_duration">
-          <el-time-select
-            v-model="temp.paper_duration"
-            :picker-options="{
+          <el-time-select v-model="temp.paper_duration" :picker-options="{
               start: '00:10',
               step: '00:10',
               end: '05:00'
-            }"
-            placeholder="选择时间(时:分)"/>
+            }" placeholder="选择时间(时:分)" />
         </el-form-item>
         <el-form-item label="难度系数" prop="paper_difficulty">
-          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px"/>
+          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px" />
         </el-form-item>
-        <el-form-item label="注意事项" prop="paperAttention">
-          <el-input v-model="temp.paperAttention" type="textarea" />
+        <el-form-item label="注意事项" prop="paper_attention">
+          <el-input v-model="temp.paper_attention" type="textarea" />
         </el-form-item>
         <el-form-item label="单选题分值" prop="singleScore">
-          <el-input-number v-model="temp.singleScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.singleScore" :min="1" :max="99" />
         </el-form-item>
         <el-form-item label="多选题分值" prop="multipleScore">
-          <el-input-number v-model="temp.multipleScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.multipleScore" :min="1" :max="99" />
         </el-form-item>
         <el-form-item label="判断题分值" prop="judgeScore">
-          <el-input-number v-model="temp.judgeScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.judgeScore" :min="1" :max="99" />
         </el-form-item>
         <el-form-item label="填空题分值" prop="fillScore">
-          <el-input-number v-model="temp.fillScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.fillScore" :min="1" :max="99" />
         </el-form-item>
         <div style="width: 600px">
           <el-input v-model="fixedFilterText" placeholder="查找试卷问题关键字" style="margin-bottom:30px;" />
-          <el-tree
-            ref="fixedPaperDataTree"
-            :data="fixedPaperData"
-            :props="defaultProps"
-            :filter-node-method="filterNode"
-            show-checkbox
-            class="filter-tree"
-          />
+          <el-tree ref="fixedPaperDataTree" :data="fixedPaperData" :props="defaultProps"
+            :filter-node-method="filterNode" show-checkbox class="filter-tree" />
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -176,9 +159,11 @@
 
     <!--随机组卷弹出框-->
     <el-dialog :visible.sync="dialogFormVisible" title="随机组卷" style="margin-bottom: 20px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
+        style="width: 400px; margin-left:50px;">
         <el-form-item label="所属科目" prop="course_id">
-          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item">
+          <el-select v-model="temp.course_id" placeholder="选择科目" clearable style="width: 200px;margin-right: 15px;"
+            class="filter-item">
             <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -186,44 +171,41 @@
           <el-input v-model="temp.paper_name" />
         </el-form-item>
         <el-form-item label="考试时长" prop="paper_duration">
-          <el-time-select
-            v-model="temp.paper_duration"
-            :picker-options="{
+          <el-time-select v-model="temp.paper_duration" :picker-options="{
               start: '00:10',
               step: '00:10',
               end: '05:00'
-            }"
-            placeholder="选择时间(时:分)"/>
+            }" placeholder="选择时间(时:分)" />
         </el-form-item>
         <el-form-item label="难度系数" prop="paper_difficulty">
-          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px"/>
+          <el-rate v-model="temp.paper_difficulty" style="margin-top: 10px" />
         </el-form-item>
-        <el-form-item label="注意事项" prop="paperAttention">
-          <el-input v-model="temp.paperAttention" type="textarea" />
+        <el-form-item label="注意事项" prop="paper_attention">
+          <el-input v-model="temp.paper_attention" type="textarea" />
         </el-form-item>
         <el-form-item label="单选题分值" prop="singleScore">
-          <el-input-number v-model="temp.singleScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.singleScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="单选题数目" prop="singleNum">
-          <el-input-number v-model="temp.singleNum" :min="1" :max="30"/>
+          <el-input-number v-model="temp.singleNum" :min="0" :max="30" />
         </el-form-item>
         <el-form-item label="多选题分值" prop="multipleScore">
-          <el-input-number v-model="temp.multipleScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.multipleScore" :min="0" :max="99" />
         </el-form-item>
-        <el-form-item label="多选题数目" prop="multipleNum" >
-          <el-input-number v-model="temp.multipleNum" :min="1" :max="10"/>
+        <el-form-item label="多选题数目" prop="multipleNum">
+          <el-input-number v-model="temp.multipleNum" :min="0" :max="10" />
         </el-form-item>
         <el-form-item label="判断题分值" prop="judgeScore">
-          <el-input-number v-model="temp.judgeScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.judgeScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="判断题数目" prop="judgeNum">
-          <el-input-number v-model="temp.judgeNum" :min="1" :max="20"/>
+          <el-input-number v-model="temp.judgeNum" :min="0" :max="20" />
         </el-form-item>
         <el-form-item label="填空题分值" prop="fillScore">
-          <el-input-number v-model="temp.fillScore" :min="1" :max="99"/>
+          <el-input-number v-model="temp.fillScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="填空题数目" prop="fillNum">
-          <el-input-number v-model="temp.fillNum" :min="1" :max="30"/>
+          <el-input-number v-model="temp.fillNum" :min="0" :max="30" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -239,27 +221,45 @@
     <!--可自定义按钮的样式、show/hide临界点、返回的位置  -->
     <!--如需文字提示，可在外部添加element的<el-tooltip></el-tooltip>元素  -->
     <el-tooltip placement="top" content="返回顶部">
-      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50" transition-name="fade" />
+      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50"
+        transition-name="fade" />
     </el-tooltip>
   </div>
 </template>
 
 <script>
-/* eslint-disable */
-import { reqGetPapersList, reqSearchPapersList, reqDeletePaper, reqPaperQueDetailByPaperId, reqRandomInsertPaperInfo, reqFixedInsertPaperInfo, reqPaperQueDetailByLangId } from '@/api/paper'
-import { getVueCourses } from '@/api/common'
+  /* eslint-disable */
+  import {
+    getPapers,
+    reqSearchPapersList,
+    reqDeletePaper,
+    reqPaperQueDetailByPaperId,
+    reqRandomInsertPaperInfo,
+    reqFixedInsertPaperInfo,
+    reqPaperQueDetailByLangId
+  } from '@/api/paper'
+  import {
+    getVueCourses
+  } from '@/api/common'
 
 
 
-import waves from '@/directive/waves' // Waves directive
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import BackToTop from '@/components/BackToTop'
+  import waves from '@/directive/waves' // Waves directive
+  import {
+    parseTime
+  } from '@/utils'
+  import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+  import BackToTop from '@/components/BackToTop'
 
   export default {
     name: 'PaperInfo',
-    components: { Pagination, BackToTop },
-    directives: { waves },
+    components: {
+      Pagination,
+      BackToTop
+    },
+    directives: {
+      waves
+    },
     data() {
       return {
         tableKey: 0,
@@ -271,15 +271,21 @@ import BackToTop from '@/components/BackToTop'
           limit: 10,
           paper_name: undefined,
           course_id: undefined,
-          paperType: undefined
+          paper_mechanism: undefined
         },
         langOptions: [],
-        paperTypeOptions: [{ label: '随机组卷', key: '1' }, { label: '固定组卷', key: '2' }],
+        paperTypeOptions: [{
+          label: '随机组卷',
+          key: '0'
+        }, {
+          label: '固定组卷',
+          key: '1'
+        }],
         temp: {
           paper_name: '',
           paper_duration: '',
           paper_difficulty: undefined,
-          paperAttention: '',
+          paper_attention: '',
           singleScore: undefined,
           singleNum: undefined,
           multipleScore: undefined,
@@ -288,7 +294,8 @@ import BackToTop from '@/components/BackToTop'
           judgeNum: undefined,
           fillScore: undefined,
           fillNum: undefined,
-          course_id: undefined
+          course_id: undefined,
+          paper_config: {}
         },
         fixedDialogFormVisible: false,
         dialogFormVisible: false,
@@ -305,28 +312,108 @@ import BackToTop from '@/components/BackToTop'
           label: 'label'
         },
         fixRules: {
-          course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paper_name: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
-          paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
-          singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
-          multipleScore: [{ required: true, message: '多选题分数为必填项', trigger: 'change' }],
-          judgeScore: [{ required: true, message: '判断题分数为必填项', trigger: 'change' }],
-          fillScore: [{ required: true, message: '填空题分数为必填项', trigger: 'change' }],
+          course_id: [{
+            required: true,
+            message: '试卷名称为必填项',
+            trigger: 'change'
+          }],
+          paper_name: [{
+            required: true,
+            message: '试卷名称为必填项',
+            trigger: 'change'
+          }],
+          paper_duration: [{
+            required: true,
+            message: '考试时长为必填项',
+            trigger: 'change'
+          }],
+          paper_difficulty: [{
+            required: true,
+            message: '难度系数为必填项',
+            trigger: 'change'
+          }],
+          singleScore: [{
+            required: true,
+            message: '单选题分数为必填项',
+            trigger: 'change'
+          }],
+          multipleScore: [{
+            required: true,
+            message: '多选题分数为必填项',
+            trigger: 'change'
+          }],
+          judgeScore: [{
+            required: true,
+            message: '判断题分数为必填项',
+            trigger: 'change'
+          }],
+          fillScore: [{
+            required: true,
+            message: '填空题分数为必填项',
+            trigger: 'change'
+          }],
         },
         rules: {
-          course_id: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paper_name: [{ required: true, message: '试卷名称为必填项', trigger: 'change' }],
-          paper_duration: [{ required: true, message: '考试时长为必填项', trigger: 'change' }],
-          paper_difficulty: [{ required: true, message: '难度系数为必填项', trigger: 'change' }],
-          singleScore: [{ required: true, message: '单选题分数为必填项', trigger: 'change' }],
-          singleNum: [{ required: true, message: '单选题数目为必填项', trigger: 'change' }],
-          multipleScore: [{ required: true, message: '多选题分数为必填项', trigger: 'change' }],
-          multipleNum: [{ required: true, message: '多选题数目为必填项', trigger: 'change' }],
-          judgeScore: [{ required: true, message: '判断题分数为必填项', trigger: 'change' }],
-          judgeNum: [{ required: true, message: '判断题数目为必填项', trigger: 'change' }],
-          fillScore: [{ required: true, message: '填空题分数为必填项', trigger: 'change' }],
-          fillNum: [{ required: true, message: '填空题数目为必填项', trigger: 'change' }],
+          course_id: [{
+            required: true,
+            message: '试卷名称为必填项',
+            trigger: 'change'
+          }],
+          paper_name: [{
+            required: true,
+            message: '试卷名称为必填项',
+            trigger: 'change'
+          }],
+          paper_duration: [{
+            required: true,
+            message: '考试时长为必填项',
+            trigger: 'change'
+          }],
+          paper_difficulty: [{
+            required: true,
+            message: '难度系数为必填项',
+            trigger: 'change'
+          }],
+          singleScore: [{
+            required: true,
+            message: '单选题分数为必填项',
+            trigger: 'change'
+          }],
+          singleNum: [{
+            required: true,
+            message: '单选题数目为必填项',
+            trigger: 'change'
+          }],
+          multipleScore: [{
+            required: true,
+            message: '多选题分数为必填项',
+            trigger: 'change'
+          }],
+          multipleNum: [{
+            required: true,
+            message: '多选题数目为必填项',
+            trigger: 'change'
+          }],
+          judgeScore: [{
+            required: true,
+            message: '判断题分数为必填项',
+            trigger: 'change'
+          }],
+          judgeNum: [{
+            required: true,
+            message: '判断题数目为必填项',
+            trigger: 'change'
+          }],
+          fillScore: [{
+            required: true,
+            message: '填空题分数为必填项',
+            trigger: 'change'
+          }],
+          fillNum: [{
+            required: true,
+            message: '填空题数目为必填项',
+            trigger: 'change'
+          }],
         },
         downloadLoading: false,
         myBackToTopStyle: {
@@ -336,7 +423,7 @@ import BackToTop from '@/components/BackToTop'
           height: '40px',
           'border-radius': '4px',
           'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-          background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
+          background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
         }
       }
     },
@@ -353,17 +440,17 @@ import BackToTop from '@/components/BackToTop'
       this.getList()
     },
     methods: {
-      async vueCourses(){
+      async vueCourses() {
         let result = await getVueCourses();
         this.langOptions = result.data;
       },
       async getList() {
         this.listLoading = true
-        let result = await reqGetPapersList()
-        if (result.statu === 0){
-          this.langOptions = result.data.langOptions
-          this.total = result.data.papersList.length
-          this.list = result.data.papersList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        let result = await getPapers()
+        if (result.http_status === 200) {
+          const lists = result.data;
+          this.total = lists.total
+          this.list = lists.data;
         }
         // 延迟0.5秒等待请求数据
         setTimeout(() => {
@@ -382,7 +469,8 @@ import BackToTop from '@/components/BackToTop'
         this.filterText = ''
         this.clickPaperTitle = `试卷详情：${row.paper_name}`
         this.subPaperTitle = `试卷总分：${row.totalScore}分，试卷总题数：${row.totalNum}道。`
-        this.minSubPaperTitle = `单选题${row.singleNum}道（每道${row.singleScore}分），多选题${row.multipleNum}道（每道${row.multipleScore}分），判断题${row.judgeNum}道（每道${row.judgeScore}分），填空题${row.fillNum}道（每道${row.fillScore}分）。`
+        this.minSubPaperTitle =
+          `单选题${row.singleNum}道（每道${row.singleScore}分），多选题${row.multipleNum}道（每道${row.multipleScore}分），判断题${row.judgeNum}道（每道${row.judgeScore}分），填空题${row.fillNum}道（每道${row.fillScore}分）。`
         this.paperData = [{
           id: 1,
           label: '单选题列表',
@@ -410,8 +498,7 @@ import BackToTop from '@/components/BackToTop'
           type: 'warning'
         }).then(() => {
           this.deletePaper(row)
-        }).catch(() => {
-        })
+        }).catch(() => {})
       },
       async deletePaper(row) {
         let result = await reqDeletePaper(row.paperId)
@@ -428,33 +515,34 @@ import BackToTop from '@/components/BackToTop'
           })
         }
       },
-      async handleFilter(){
+      async handleFilter() {
         this.listQuery.page = 1
         this.listLoading = true
         let course_id = this.listQuery.course_id
-        if (this.listQuery.course_id === null || this.listQuery.course_id === undefined){
+        if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
           course_id = 0
         }
-        let paperType = this.listQuery.paperType
-        if (this.listQuery.paperType === null || this.listQuery.paperType === undefined){
-          paperType = 0
+        let paper_mechanism = this.listQuery.paper_mechanism
+        if (this.listQuery.paper_mechanism === null || this.listQuery.paper_mechanism === undefined) {
+          paper_mechanism = 0
         }
-        let result = await reqSearchPapersList(this.listQuery.paper_name, course_id, paperType)
-        if (result.statu === 0){
+        let result = await reqSearchPapersList(this.listQuery.paper_name, course_id, paper_mechanism)
+        if (result.statu === 0) {
           this.total = result.data.length
-          this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+          this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1))
         }
         // 延迟一秒等待请求数据
         setTimeout(() => {
           this.listLoading = false
         }, 500)
       },
-      resetTemp(){
+      resetTemp() {
         this.temp = {
           paper_name: '',
           paper_duration: '',
           paper_difficulty: undefined,
-          paperAttention: '',
+          paper_attention: '',
           singleScore: undefined,
           singleNum: undefined,
           multipleScore: undefined,
@@ -570,58 +658,93 @@ import BackToTop from '@/components/BackToTop'
         })
       },
       async fixedInsertPaperInfo() {
-        let arr = this.temp.paper_duration.split(":")
-        this.temp.paper_duration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
+        let paper_duration = this.temp.paper_duration;
+        let arr = paper_duration.split(":") || paper_duration;
+        this.temp.paper_duration = parseInt(arr[0]) * 60 * 60 + parseInt(arr[1]) * 60
+        this.temp.paper_mechanism = 1;
+        console.log(this.temp);
+        return;
         let result = await reqFixedInsertPaperInfo(this.temp)
-        if (result.statu === 0){
+        if (result.http_status === 200) {
           this.fixedDialogFormVisible = false
           this.$notify({
-            title: '成功',
-            message: '试卷发布成功',
+            message: result.msg,
             type: 'success',
             duration: 2000
           })
           this.getList()
         } else {
           this.$notify({
-            title: '失败',
             message: result.msg,
             type: 'error',
             duration: 2000
           })
         }
       },
-      handleCreate(){
+      handleCreate() {
         this.resetTemp()
         this.dialogFormVisible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
       },
-      createData(){
+      createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.randomInsertPaperInfo()
           }
         })
       },
-      async randomInsertPaperInfo(){
-        let arr = this.temp.paper_duration.split(":")
-        this.temp.paper_duration = parseInt(arr[0])*60*60 + parseInt(arr[1])*60
+      async randomInsertPaperInfo() {
+        let paper_duration = this.temp.paper_duration;
+        if (!(!isNaN(parseFloat(paper_duration)) && isFinite(paper_duration))) {
+          let arr = paper_duration.split(":");
+          this.temp.paper_duration = parseInt(arr[0]) * 60 * 60 + parseInt(arr[1]) * 60;
+        }
+        // 随机组卷
         this.temp.paper_mechanism = 0;
+        // 考试题目对应分数的配置
+        this.temp.paper_config = {
+          // 单选
+          'single': {
+            'num': this.temp.singleNum,
+            'score': this.temp.singleScore,
+          },
+          // 多选
+          'multiple': {
+            'num': this.temp.multipleNum,
+            'score': this.temp.multipleScore,
+          },
+          // 判断题
+          'judge': {
+            'num': this.temp.judgeNum,
+            'score': this.temp.judgeScore,
+          },
+          // 填空
+          'fill': {
+            'num': this.temp.fillNum,
+            'score': this.temp.fillScore,
+          },
+        };
+        // delete this.temp.singleNum;
+        // delete this.temp.singleScore;
+        // delete this.temp.multipleNum;
+        // delete this.temp.multipleScore;
+        // delete this.temp.judgeNum;
+        // delete this.temp.judgeScore;
+        // delete this.temp.fillNum;
+        // delete this.temp.fillScore;
         let result = await reqRandomInsertPaperInfo(this.temp)
-        if (result.statu === 0){
+        if (result.http_status === 200) {
           this.dialogFormVisible = false
           this.$notify({
-            title: '成功',
-            message: '试卷发布成功',
+            message: result.msg,
             type: 'success',
             duration: 2000
           })
           this.getList()
         } else {
           this.$notify({
-            title: '失败',
             message: result.msg,
             type: 'error',
             duration: 2000
