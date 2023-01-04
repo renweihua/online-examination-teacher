@@ -276,6 +276,28 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // 复制对象
+      if(this.temp.question_options.choice_A){
+        this.temp.choice_A = this.temp.question_options.choice_A;
+      }
+      if(this.temp.question_options.choice_B){
+        this.temp.choice_B = this.temp.question_options.choice_B;
+      }
+      if(this.temp.question_options.choice_C){
+        this.temp.choice_C = this.temp.question_options.choice_C;
+      }
+      if(this.temp.question_options.choice_D){
+        this.temp.choice_D = this.temp.question_options.choice_D;
+      }
+      if(this.temp.question_options.choice_E){
+        this.temp.choice_E = this.temp.question_options.choice_E;
+      }
+      if(this.temp.question_options.choice_F){
+        this.temp.choice_F = this.temp.question_options.choice_F;
+      }
+      if(this.temp.question_options.choice_G){
+        this.temp.choice_G = this.temp.question_options.choice_G;
+      }
+
       this.dialogStatus = '编辑题目'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -291,7 +313,7 @@ export default {
     },
     async handleUpdateSingle() {
       const result = await reqUpdateSingleInfo(this.temp)
-      if (result.statu === 0) {
+      if (result.http_status === 200) {
         this.dialogFormVisible = false
         this.$message({
           message: result.msg,
