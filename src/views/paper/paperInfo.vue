@@ -29,9 +29,9 @@
 
     <el-table v-loading="listLoading" :key="tableKey" :data="list" :default-sort="{prop: 'id', order: 'ascending'}"
       border fit highlight-current-row style="width: 100%;" @row-contextmenu="seePaperDetail">
-      <el-table-column label="序号" prop="id" sortable align="center" width="90">
+      <el-table-column label="序号" prop="paper_id" sortable align="center" width="90">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.paper_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="试卷名称" align="center">
@@ -39,12 +39,12 @@
           <span>{{ scope.row.paper_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="langName" sortable label="所属科目" align="center" width="110">
-        <template slot-scope="scope">
-          <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
+      <el-table-column prop="course_id" sortable label="所属科目" align="center">
+        <template v-if="scope.row.course" slot-scope="scope">
+          <viewer v-if="scope.row.course.course_cover">
+            <img :src="scope.row.course.course_cover" style="width: 40px;height: 40px;border-radius: 20px;">
           </viewer>
-          <div>{{ scope.row.langName }}</div>
+          <div>{{ scope.row.course.course_name }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="paper_duration" sortable label="考试时长" align="center" width="110">
@@ -59,17 +59,17 @@
       </el-table-column>
       <el-table-column label="考试注意事项" width="120" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.paper_attention || '暂无考试注意事项' }}</span>
+          <span>{{ scope.row.paper_attention }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paper_mechanism" sortable label="试卷类型" align="center" width="110">
+      <el-table-column prop="paper_mechanism_text" sortable label="试卷类型" align="center" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.paper_mechanism===1?'随机组卷':'固定组卷' }}</span>
+          <span>{{ scope.row.paper_mechanism_text }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="totalScore" sortable label="试卷总分" align="center" width="110">
+      <el-table-column prop="total_score" sortable label="试卷总分" align="center" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.totalScore }}分</span>
+          <span>{{ scope.row.total_score }}分</span>
         </template>
       </el-table-column>
       <el-table-column prop="student_count" sortable label="已参加人数" align="center" width="120">
@@ -79,7 +79,7 @@
       </el-table-column>
       <el-table-column prop="created_time" sortable label="试卷创建时间" align="center" width="155">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_time | date-format }}</span>
+          <span>{{ parseTime(scope.row.created_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="122">
@@ -231,7 +231,6 @@
   /* eslint-disable */
   import {
     getPapers,
-    reqSearchPapersList,
     reqDeletePaper,
     reqPaperQueDetailByPaperId,
     reqRandomInsertPaperInfo,
@@ -258,7 +257,7 @@
       BackToTop
     },
     directives: {
-      waves
+      waves,
     },
     data() {
       return {
@@ -440,6 +439,7 @@
       this.getList()
     },
     methods: {
+      parseTime,
       async vueCourses() {
         let result = await getVueCourses();
         this.langOptions = result.data;
@@ -460,7 +460,7 @@
       async seePaperDetail(row, column, event) {
         // 阻止鼠标右键默认事件
         event.preventDefault()
-        let result = await reqPaperQueDetailByPaperId(row.paperId, row.totalNum)
+        let result = await reqPaperQueDetailByPaperId(row.paperId, row.total_num)
         let singleData = result.data.singleData
         let multipleData = result.data.multipleData
         let judgeData = result.data.judgeData
@@ -468,7 +468,7 @@
         //初始化数据
         this.filterText = ''
         this.clickPaperTitle = `试卷详情：${row.paper_name}`
-        this.subPaperTitle = `试卷总分：${row.totalScore}分，试卷总题数：${row.totalNum}道。`
+        this.subPaperTitle = `试卷总分：${row.total_score}分，试卷总题数：${row.total_num}道。`
         this.minSubPaperTitle =
           `单选题${row.singleNum}道（每道${row.singleScore}分），多选题${row.multipleNum}道（每道${row.multipleScore}分），判断题${row.judgeNum}道（每道${row.judgeScore}分），填空题${row.fillNum}道（每道${row.fillScore}分）。`
         this.paperData = [{
@@ -520,17 +520,21 @@
         this.listLoading = true
         let course_id = this.listQuery.course_id
         if (this.listQuery.course_id === null || this.listQuery.course_id === undefined) {
-          course_id = 0
+          course_id = -1
         }
         let paper_mechanism = this.listQuery.paper_mechanism
         if (this.listQuery.paper_mechanism === null || this.listQuery.paper_mechanism === undefined) {
-          paper_mechanism = 0
+          paper_mechanism = -1
         }
-        let result = await reqSearchPapersList(this.listQuery.paper_name, course_id, paper_mechanism)
-        if (result.statu === 0) {
-          this.total = result.data.length
-          this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page &&
-            index >= this.listQuery.limit * (this.listQuery.page - 1))
+        let result = await getPapers({
+          'paper_name': this.listQuery.paper_name,
+          course_id,
+          paper_mechanism
+        })
+        if (result.http_status === 200) {
+          const lists = result.data;
+          this.total = lists.total
+          this.list = lists.data;
         }
         // 延迟一秒等待请求数据
         setTimeout(() => {

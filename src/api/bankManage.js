@@ -9,7 +9,7 @@ import request from '@/utils/request'
 export const getQuestionBanks = (data) => request({
 	url: `/question_bank`,
 	method: 'get',
-    data
+    params: data,
 })
 // 删除题库
 export const deleteQuestion = (data) => request({

@@ -6,10 +6,8 @@ import request from '@/utils/request'
 export const getPapers = (data) => request({
     url: `/paper`,
     method: 'get',
-    data
+    params: data,
 })
-// 获取搜素公告信息
-export const reqSearchPapersList = (paper_name, course_id, paperType) => ajax('/searchPapersList', { paper_name, course_id, paperType })
 // 请求删除试卷
 export const reqDeletePaper = (paperId) => ajax('/deletePaper', { paperId }, 'POST')
 // 请求获取选中试卷问题详情
