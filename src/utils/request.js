@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import { getStore, removeStore } from '@/utils/mUtils'
 
 let timeout = 20000;
 
@@ -18,8 +19,9 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
-      config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    let access_token = getStore('access_token')
+    if (access_token) {
+      config.headers['Authorization'] = access_token // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded;charset=UTF-8') {
         if (config.data) {
@@ -39,9 +41,11 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
   response => {
-    /**
-     * code为非20000是抛错 可结合自己业务进行修改
-     */
+    // 如果服务端返回新的Token，那么自动更新本地的access_token
+    if (response.headers.new_authorization) {
+        setStore('access_token', response.headers.new_authorization);
+    }
+
     const res = response.data
     // console.log(res);
     if (res.http_status !== 200) {
@@ -87,6 +91,9 @@ service.interceptors.response.use(
                 break;
             case 401: // 认证失败
                 msg = error.response.data.msg || error.response.statusText;
+                // 移除Token
+                removeStore('teacherInfo')
+                removeStore('access_token');
                 break;
             case 500:
                 msg = error.response.data.msg || error.response.statusText;

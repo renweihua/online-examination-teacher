@@ -100,6 +100,7 @@ export default {
         this.$store.dispatch('recordUserInfo', result.data)
         // 将userInfo存入localSession
         setStore('teacherInfo', result.data)
+        setStore('access_token', result.data.access_token);
         this.$message({
           message: result.msg,
           type: 'success'
