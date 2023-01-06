@@ -1,4 +1,6 @@
 import ajax from '@/config/ajax'
+import request from '@/utils/request'
+
 const BASE_URL = process.env.BASE_API
 
 // 获取全部学生信息
@@ -11,7 +13,12 @@ export const reqSearchStudentsList = (sno, stuName, stuSex) => ajax(BASE_URL + '
 export const reqInsertStudentInfo = (temp) => ajax(BASE_URL + '/insertStudentInfo', temp, 'POST')
 
 // 获取全部成绩信息
-export const reqGetScoresList = () => ajax(BASE_URL + '/getScoresList')
+export const reqGetScoresList = (params) => request({
+    url: `/paper-score`,
+    method: 'get',
+    params,
+})
+
 // 请求删除成绩
 export const reqDeleteScore = (row) => ajax(BASE_URL + '/deleteScore', row, 'POST')
 // 请求搜索成绩信息

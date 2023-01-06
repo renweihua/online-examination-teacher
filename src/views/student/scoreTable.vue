@@ -21,54 +21,54 @@
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
-      :default-sort = "{prop: 'sno', order: 'ascending'}"
+      :default-sort = "{prop: 'student_no', order: 'ascending'}"
       border
       fit
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="学号" prop="sno" sortable align="center">
+      <el-table-column label="学号" prop="student_no" sortable align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sno }}</span>
+          <span>{{ scope.row.student.student_no }}</span>
         </template>
       </el-table-column>
       <el-table-column label="姓名" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuName }}</span>
+          <span>{{ scope.row.student.student_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="头像" align="center">
         <template slot-scope="scope">
           <viewer>
-            <img :src="scope.row.stuImgSrc || require('@/assets/images/profile.jpg')" style="width: 40px;height: 40px;border-radius: 5px">
+            <img :src="scope.row.student.student_avatar || require('@/assets/images/profile.jpg')" style="width: 40px;height: 40px;border-radius: 5px">
           </viewer>
         </template>
       </el-table-column>
       <el-table-column label="试卷名称" align="center" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.paper_name }}</span>
+          <span>{{ scope.row.paper.paper_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="score" label="考试分数" sortable align="center">
+      <el-table-column prop="paper_score" label="考试分数" sortable align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.score">{{ scope.row.score }}分</span>
+          <span v-if="scope.row.paper_score">{{ scope.row.paper_score }}分</span>
           <span v-else style="color: #FF0000">0分</span>
         </template>
       </el-table-column>
-      <el-table-column prop="startTime" sortable label="开始考试时间" align="center" width="170">
+      <el-table-column prop="start_time" sortable label="开始考试时间" align="center" width="170">
         <template slot-scope="scope">
-          <span>{{ scope.row.startTime | date-format }}</span>
+          <span>{{ parseTime(scope.row.start_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="endTime" sortable label="提交考卷时间" align="center" width="170">
+      <el-table-column prop="end_time" sortable label="提交考卷时间" align="center" width="170">
         <template slot-scope="scope">
-          <span v-if="scope.row.endTime">{{ scope.row.endTime | date-format }}</span>
+          <span v-if="scope.row.end_time">{{ parseTime(scope.row.end_time) }}</span>
           <span v-else style="color: #FF0000">强制关闭考试页面无提交试卷时间记录</span>
         </template>
       </el-table-column>
-      <el-table-column prop="timeUsed" label="花费时间" sortable align="center">
+      <el-table-column prop="time_used" label="花费时间" sortable align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.timeUsed">{{ scope.row.timeUsed | timeUsed-format }}</span>
+          <span v-if="scope.row.time_used">{{ scope.row.time_used | timeUsed-format }}</span>
           <span v-else style="color: #FF0000">00:00:00</span>
         </template>
       </el-table-column>
@@ -132,15 +132,21 @@ import BookTypeOption from './components/BookTypeOption'
     },
     created() {
       this.getList()
+      this.vuePapers();
     },
     methods: {
+        parseTime,
+      async vuePapers() {
+        let result = await getVuePapers();
+        this.paperNameOptions = result.data;
+      },
       async getList() {
         this.listLoading = true
         let result = await reqGetScoresList()
-        if (result.statu === 0){
-          this.paperNameOptions = result.data.papersList
-          this.total = result.data.scoresList.length
-          this.list = result.data.scoresList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        if (result.http_status === 200){
+          const lists = result.data;
+          this.total = lists.total
+          this.list = lists.data;
         }
         // 延迟0.5秒等待请求数据
         setTimeout(() => {
@@ -179,7 +185,7 @@ import BookTypeOption from './components/BookTypeOption'
         if (this.listQuery.paperId == null || this.listQuery.paperId == undefined){
           paperId = 0
         }
-        let result = await reqSearchScoresList(this.listQuery.sno, paperId)
+        let result = await reqGetScoresList({paper_id: paperId})
         if (result.statu === 0){
           this.total = result.data.length
           this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))

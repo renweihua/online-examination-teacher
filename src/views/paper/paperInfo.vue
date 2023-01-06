@@ -130,16 +130,16 @@
           <el-input v-model="temp.paper_attention" type="textarea" />
         </el-form-item>
         <el-form-item label="单选题分值" prop="singleScore">
-          <el-input-number v-model="temp.singleScore" :min="1" :max="99" />
+          <el-input-number v-model="temp.singleScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="多选题分值" prop="multipleScore">
-          <el-input-number v-model="temp.multipleScore" :min="1" :max="99" />
+          <el-input-number v-model="temp.multipleScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="判断题分值" prop="judgeScore">
-          <el-input-number v-model="temp.judgeScore" :min="1" :max="99" />
+          <el-input-number v-model="temp.judgeScore" :min="0" :max="99" />
         </el-form-item>
         <el-form-item label="填空题分值" prop="fillScore">
-          <el-input-number v-model="temp.fillScore" :min="1" :max="99" />
+          <el-input-number v-model="temp.fillScore" :min="0" :max="99" />
         </el-form-item>
         <div style="width: 600px">
           <el-input v-model="fixedFilterText" placeholder="查找试卷问题关键字" style="margin-bottom:30px;" />
