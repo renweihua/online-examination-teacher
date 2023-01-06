@@ -187,9 +187,10 @@ import BookTypeOption from './components/BookTypeOption'
           paperId = 0
         }
         let result = await reqGetScoresList({paper_id: paperId})
-        if (result.statu === 0){
-          this.total = result.data.length
-          this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        if (result.http_status === 200){
+          const lists = result.data;
+          this.total = lists.total
+          this.list = lists.data;
         }
         // 延迟一秒等待请求数据
         setTimeout(() => {

@@ -24,52 +24,52 @@
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
-      :default-sort = "{prop: 'sno', order: 'ascending'}"
+      :default-sort = "{prop: 'student_no', order: 'ascending'}"
       border
       fit
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="学号" prop="sno" sortable align="center" width="140">
+      <el-table-column label="学号" prop="student_no" sortable align="center" width="140">
         <template slot-scope="scope">
-          <span>{{ scope.row.sno }}</span>
+          <span>{{ scope.row.student_no }}</span>
         </template>
       </el-table-column>
       <el-table-column label="姓名" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuName }}</span>
+          <span>{{ scope.row.student_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="头像" align="center">
         <template slot-scope="scope">
           <viewer>
-            <img :src="scope.row.stuImgSrc || require('@/assets/images/profile.jpg')" style="width: 40px;height: 40px;border-radius: 5px">
+            <img :src="scope.row.student_avatar || require('@/assets/images/profile.jpg')" style="width: 40px;height: 40px;border-radius: 5px">
           </viewer>
         </template>
       </el-table-column>
       <el-table-column label="性别" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuSex }}</span>
+          <span>{{ scope.row.student_sex }}</span>
         </template>
       </el-table-column>
       <el-table-column label="邮箱" align="center" width="140">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuEmail || '暂无绑定邮箱' }}</span>
+          <span>{{ scope.row.student_email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="手机号" align="center" width="140">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuPhone || '暂无绑定手机号' }}</span>
+          <span>{{ scope.row.student_mobile }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="stuCreateTime" sortable label="注册时间" align="center" width="160">
+      <el-table-column prop="created_time" sortable label="注册时间" align="center" width="160">
         <template slot-scope="scope">
-          <span>{{ scope.row.stuCreateTime | date-format }}</span>
+          <span>{{ parseTime(scope.row.created_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="stuLastLoginTime" sortable label="最近登录时间" align="center" width="160">
+      <el-table-column prop="last_login_time" sortable label="最近登录时间" align="center" width="160">
         <template slot-scope="scope">
-          <span v-if="scope.row.stuLastLoginTime">{{ scope.row.stuLastLoginTime | date-format }}</span>
+          <span v-if="scope.row.last_login_time">{{ parseTime(scope.row.last_login_time) }}</span>
           <span v-else>暂无最近登录记录</span>
         </template>
       </el-table-column>
@@ -83,15 +83,15 @@
       <el-table-column label="登录权限" align="center" class-name="small-padding" width="120">
         <template slot-scope="{row}">
           <!--<el-switch
-            v-if="row.stuStatus == '1'"
-            value="row.stuStatus == '1'"
+            v-if="row.status == '1'"
+            value="row.status == '1'"
             active-color="#13ce66"
             inactive-color="#ff4949"/>
-          <span :style="{ color: row.stuStatus === '1' ? 'green' : 'red', fontWeight:'bold' }">{{ row.stuStatus === '1'?'已启用':'已禁用' }}</span>-->
-          <el-button v-waves v-if="row.stuStatus=='1'" size="mini" icon="el-icon-success" type="success" @click="handleModifyStatus(row,'0')">
+          <span :style="{ color: row.status === '1' ? 'green' : 'red', fontWeight:'bold' }">{{ row.status === '1'?'已启用':'已禁用' }}</span>-->
+          <el-button v-waves v-if="row.status=='1'" size="mini" icon="el-icon-success" type="success" @click="handleModifyStatus(row,'0')">
             启用状态
           </el-button>
-          <el-button v-waves v-if="row.stuStatus=='0'" size="mini" icon="el-icon-error" type="danger" @click="handleModifyStatus(row,'1')">
+          <el-button v-waves v-if="row.status=='0'" size="mini" icon="el-icon-error" type="danger" @click="handleModifyStatus(row,'1')">
             禁用状态
           </el-button>
         </template>
@@ -137,7 +137,7 @@
 
 <script>
 /* eslint-disable */
-import { reqGetStudentsList, reqUpdateStudentInfo, reqSearchStudentsList, reqInsertStudentInfo } from '@/api/student'
+import { reqGetStudentsList, reqUpdateStudentInfo, reqInsertStudentInfo } from '@/api/student'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -160,7 +160,7 @@ export default {
         stuName: undefined,
         stuSex: undefined
       },
-      stuSexOptions: [{ label: '男', key: '男' }, { label: '女', key: '女' }],
+      stuSexOptions: [{ label: '男', key: '1' }, { label: '女', key: '2' }],
       temp: {
         sno: '',
         stuPsw: '123456',
@@ -190,13 +190,15 @@ export default {
     this.getList()
   },
   methods: {
+    parseTime,
     async getList() {
       this.listLoading = true
       let result = await reqGetStudentsList()
-      if (result.statu === 0){
-        this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
-      }
+        if (result.http_status === 200){
+          const lists = result.data;
+          this.total = lists.total
+          this.list = lists.data;
+        }
       // 延迟0.5秒等待请求数据
       setTimeout(() => {
         this.listLoading = false
@@ -253,10 +255,15 @@ export default {
     async handleFilter(){
       this.listQuery.page = 1
       this.listLoading = true
-      let result = await reqSearchStudentsList(this.listQuery.sno, this.listQuery.stuName, this.listQuery.stuSex)
-      if (result.statu === 0){
-        this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+      let result = await reqGetStudentsList({
+        student_no: this.listQuery.sno,
+        student_name: this.listQuery.stuName,
+        student_sex: this.listQuery.stuSex
+      })
+      if (result.http_status === 200){
+        const lists = result.data;
+        this.total = lists.total
+        this.list = lists.data;
       }
       // 延迟一秒等待请求数据
       setTimeout(() => {

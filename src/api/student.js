@@ -4,11 +4,14 @@ import request from '@/utils/request'
 const BASE_URL = process.env.BASE_API
 
 // 获取全部学生信息
-export const reqGetStudentsList = () => ajax(BASE_URL + '/getStudentsList')
+export const reqGetStudentsList = (params) => request({
+    url: `/student`,
+    method: 'get',
+    params,
+})
 // 请求搜索学生信息
 export const reqUpdateStudentInfo = (row) => ajax(BASE_URL + '/updateStudentInfo', row, 'POST')
-// 请求更新学生登录状态
-export const reqSearchStudentsList = (sno, stuName, stuSex) => ajax(BASE_URL + '/searchStudentInfo', { sno, stuName, stuSex })
+
 // 请求添加学生信息
 export const reqInsertStudentInfo = (temp) => ajax(BASE_URL + '/insertStudentInfo', temp, 'POST')
 
