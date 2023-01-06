@@ -94,6 +94,7 @@
 <script>
 /* eslint-disable */
 import { reqGetScoresList, reqDeleteScore, reqSearchScoresList } from '@/api/student'
+import { getVuePapers } from '@/api/common'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime, timeUsedFormat } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
