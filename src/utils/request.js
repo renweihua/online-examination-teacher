@@ -54,23 +54,6 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-
-      //
-      if (res.http_status === 401) {
-        MessageBox.confirm(
-          '你已被登出，可以取消继续留在该页面，或者重新登录',
-          '确定登出',
-          {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        ).then(() => {
-          store.dispatch('FedLogOut').then(() => {
-            location.reload() // 为了重新实例化vue-router对象 避免bug
-          })
-        })
-      }
       return Promise.reject('error')
     } else {
       return response.data
@@ -94,6 +77,20 @@ service.interceptors.response.use(
                 // 移除Token
                 removeStore('teacherInfo')
                 removeStore('access_token');
+
+                MessageBox.confirm(
+                  '登录状态已失效，可以取消继续留在该页面，或者重新登录',
+                  '登录Token失效-401',
+                  {
+                    confirmButtonText: '重新登录',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }
+                ).then(() => {
+                  store.dispatch('FedLogOut').then(() => {
+                    location.reload() // 为了重新实例化vue-router对象 避免bug
+                  })
+                });
                 break;
             case 500:
                 msg = error.response.data.msg || error.response.statusText;
