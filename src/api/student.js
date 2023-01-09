@@ -9,8 +9,18 @@ export const reqGetStudentsList = (params) => request({
     method: 'get',
     params,
 })
-// 请求搜索学生信息
-export const reqUpdateStudentInfo = (row) => ajax(BASE_URL + '/updateStudentInfo', row, 'POST')
+// 更改学生登录密码
+export const updateStudentPassword = (data) => request({
+    url: `/student/update-password`,
+    method: 'patch',
+    data,
+})
+// 更改学生账户状态
+export const setStudentStatus = (data) => request({
+    url: `/student/set-status`,
+    method: 'patch',
+    data,
+})
 
 // 请求添加学生信息
 export const reqInsertStudentInfo = (temp) => ajax(BASE_URL + '/insertStudentInfo', temp, 'POST')

@@ -137,7 +137,7 @@
 
 <script>
 /* eslint-disable */
-import { reqGetStudentsList, reqUpdateStudentInfo, reqInsertStudentInfo } from '@/api/student'
+import { reqGetStudentsList, updateStudentPassword, setStudentStatus, reqInsertStudentInfo } from '@/api/student'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -238,11 +238,11 @@ export default {
       })
     },
     async handleUpdatePsw(row) {
-      row.stuPsw = '123456'
-      let result = await reqUpdateStudentInfo(row)
-      if (result.statu === 0){
+      row.password = '123456'
+      let result = await updateStudentPassword(row);
+      if (result.http_status === 200){
         this.$message({
-          message: '重置密码成功，默认密码为123456',
+          message: result.msg + '，默认密码为123456',
           type: 'success'
         })
       } else {
