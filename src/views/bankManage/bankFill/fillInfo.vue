@@ -178,10 +178,10 @@ export default {
       },
     async getList() {
       this.listLoading = true
-      const result = await getQuestionBanks(this.listQuery)
+      let result = await getQuestionBanks(this.listQuery)
       if (result.http_status === 200) {
-        const lists = result.data;
-        this.total = lists.total
+        let lists = result.data;
+        this.total = lists.total;
         this.list = lists.data;
       }
       this.listLoading = false

@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     async getChartData(callback) {
-      const result = await reqGetChartData({paper_id: this.paperId})
+      const result = await reqGetChartData({paper_id:this.paperId})
       if (result.http_status === 200) {
         this.snoData = result.data.student_nos
         this.singleData = result.data.single_scores

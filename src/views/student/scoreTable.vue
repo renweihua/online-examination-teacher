@@ -145,8 +145,8 @@ import BookTypeOption from './components/BookTypeOption'
         this.listLoading = true
         let result = await reqGetScoresList()
         if (result.http_status === 200){
-          const lists = result.data;
-          this.total = lists.total
+          let lists = result.data;
+          this.total = lists.total;
           this.list = lists.data;
         }
         // 延迟0.5秒等待请求数据
@@ -188,8 +188,8 @@ import BookTypeOption from './components/BookTypeOption'
         }
         let result = await reqGetScoresList({paper_id: paperId})
         if (result.http_status === 200){
-          const lists = result.data;
-          this.total = lists.total
+          let lists = result.data;
+          this.total = lists.total;
           this.list = lists.data;
         }
         // 延迟一秒等待请求数据

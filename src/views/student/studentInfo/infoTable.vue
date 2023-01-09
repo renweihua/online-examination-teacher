@@ -194,8 +194,8 @@ export default {
       this.listLoading = true
       let result = await reqGetStudentsList()
         if (result.http_status === 200){
-          const lists = result.data;
-          this.total = lists.total
+          let lists = result.data;
+          this.total = lists.total;
           this.list = lists.data;
         }
       // 延迟0.5秒等待请求数据
@@ -253,8 +253,8 @@ export default {
         student_sex: this.listQuery.stuSex
       })
       if (result.http_status === 200){
-        const lists = result.data;
-        this.total = lists.total
+        let lists = result.data;
+        this.total = lists.total;
         this.list = lists.data;
       }
       // 延迟一秒等待请求数据
