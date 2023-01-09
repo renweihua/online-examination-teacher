@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="性别" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.student_sex == 1 ? '男' : '女' }}</span>
+          <span>{{ scope.row.student_sex_text }}</span>
         </template>
       </el-table-column>
       <el-table-column label="邮箱" align="center" width="140">
