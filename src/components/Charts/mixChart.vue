@@ -54,7 +54,7 @@ export default {
         if (!this.snoData.length) {
           this.titleText = '该试卷暂无人参加考试'
         } else {
-          this.titleText = `${this.paperInfo.paper_name}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paper_difficulty})`
+          this.titleText = `${this.paperInfo.paper_name}(总分：${this.paperInfo.total_score}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paper_difficulty})`
         }
         this.chart.clear()
         this.initChart()
@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     this.getChartData(() => {
-      this.titleText = `${this.paperInfo.paper_name}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paper_difficulty})`
+      this.titleText = `${this.paperInfo.paper_name}(总分：${this.paperInfo.total_score}分，考试时长：${this.paperInfo.paper_duration / 60}分钟，难度系数：${this.paperInfo.paper_difficulty})`
       this.initChart()
     })
   },
@@ -76,16 +76,16 @@ export default {
   },
   methods: {
     async getChartData(callback) {
-      const result = await reqGetChartData(this.paperId)
-      if (result.statu === 0) {
-        this.snoData = result.data.snoData
-        this.singleData = result.data.singleData
-        this.multipleData = result.data.multipleData
-        this.judgeData = result.data.judgeData
-        this.fillData = result.data.fillData
-        this.scoreData = result.data.scoreData
-        this.timeUsedData = result.data.timeUsedData
-        this.paperInfo = result.data.paperInfo
+      const result = await reqGetChartData({paper_id: this.paperId})
+      if (result.http_status === 200) {
+        this.snoData = result.data.student_nos
+        this.singleData = result.data.single_scores
+        this.multipleData = result.data.multiple_scores
+        this.judgeData = result.data.judge_scores
+        this.fillData = result.data.fill_scores
+        this.scoreData = result.data.total_scores
+        this.timeUsedData = result.data.time_useds
+        this.paperInfo = result.data.paper
         callback && callback()
       } else {
         this.$message({

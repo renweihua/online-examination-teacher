@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="性别" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.student_sex }}</span>
+          <span>{{ scope.row.student_sex == 1 ? '男' : '女' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="邮箱" align="center" width="140">
@@ -62,6 +62,11 @@
           <span>{{ scope.row.student_mobile }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="status" sortable label="账户状态" align="center" width="160">
+        <template slot-scope="{row}">
+          <span v-waves :style="{ color: row.status === 1 ? 'green' : 'red', fontWeight:'bold' }">{{ row.status === 1?'已启用':'已禁用' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="created_time" sortable label="注册时间" align="center" width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.created_time) }}</span>
@@ -70,7 +75,7 @@
       <el-table-column prop="last_login_time" sortable label="最近登录时间" align="center" width="160">
         <template slot-scope="scope">
           <span v-if="scope.row.last_login_time">{{ parseTime(scope.row.last_login_time) }}</span>
-          <span v-else>暂无最近登录记录</span>
+          <span v-else>尚未登录</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding" width="120">
@@ -80,19 +85,13 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="登录权限" align="center" class-name="small-padding" width="120">
+      <el-table-column label="操作" align="center" class-name="small-padding" width="120">
         <template slot-scope="{row}">
-          <!--<el-switch
-            v-if="row.status == '1'"
-            value="row.status == '1'"
-            active-color="#13ce66"
-            inactive-color="#ff4949"/>
-          <span :style="{ color: row.status === '1' ? 'green' : 'red', fontWeight:'bold' }">{{ row.status === '1'?'已启用':'已禁用' }}</span>-->
-          <el-button v-waves v-if="row.status=='1'" size="mini" icon="el-icon-success" type="success" @click="handleModifyStatus(row,'0')">
-            启用状态
+          <el-button v-waves v-if="row.status==1" size="mini" icon="el-icon-error" type="danger" @click="handleModifyStatus(row,'2')">
+            `禁用`账户
           </el-button>
-          <el-button v-waves v-if="row.status=='0'" size="mini" icon="el-icon-error" type="danger" @click="handleModifyStatus(row,'1')">
-            禁用状态
+          <el-button v-waves v-if="row.status==2" size="mini" icon="el-icon-success" type="success" @click="handleModifyStatus(row,'1')">
+            `启用`账户
           </el-button>
         </template>
       </el-table-column>
@@ -205,20 +204,13 @@ export default {
       }, 500)
     },
     async handleModifyStatus(row, status) {
-      row.stuStatus = status
-      let result = await reqUpdateStudentInfo(row)
-      if (result.statu === 0){
-        if (status === '1'){
+      row.status = status
+      let result = await setStudentStatus(row)
+      if (result.http_status === 200){
           this.$message({
-            message: '启用成功',
+            message: result.msg,
             type: 'success'
           })
-        } else {
-          this.$message({
-            message: '禁用成功',
-            type: 'error'
-          })
-        }
       }
       else {
         this.$message({

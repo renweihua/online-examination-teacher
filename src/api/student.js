@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import ajax from '@/config/ajax'
 import request from '@/utils/request'
 
@@ -40,7 +42,11 @@ export const reqSearchScoresList = (sno, paperId) => ajax(BASE_URL + '/searchSco
 // 获取全部已发布试卷信息
 export const reqGetPapersList = () => ajax(BASE_URL + '/getPapersList')
 // 请求获取成绩图标数据
-export const reqGetChartData = (paperId) => ajax(BASE_URL + '/getChartData', { paperId })
+export const reqGetChartData = (params) => request({
+    url: `/paper-score/chart-statistics`,
+    method: 'get',
+    params,
+})
 
 // 插入上传学生信息数据
 export const reqInsertStudentInfoList = (studentList) => ajax(BASE_URL + '/insertStudentInfoList', { studentList }, 'POST')

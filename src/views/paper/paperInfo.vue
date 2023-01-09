@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.paper_name" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;"
-        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.paper_name" placeholder="搜索试卷名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.course_id" placeholder="搜索科目" clearable style="width: 200px;margin-right: 15px;"
         class="filter-item" @change="handleFilter">
         <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />

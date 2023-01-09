@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import ajax from '@/config/ajax'
 import request from '@/utils/request'
 
