@@ -171,7 +171,7 @@ export default {
     },
     async handleUpdateNotice() {
       let result = await reqUpdateNoticeInfo(this.temp)
-      if (result.statu === 0){
+      if (result.http_status === 200){
         this.dialogFormVisible = false
         this.$message({
           message: result.msg,
@@ -250,8 +250,8 @@ export default {
     },
     async handleDeleteNotice(row) {
       let notice_id = row.notice_id
-      let result = await reqDeleteNotice(notice_id)
-      if (result.statu === 0){
+      let result = await reqDeleteNotice({notice_id})
+      if (result.http_status === 200){
         this.$message({
           message: result.msg,
           type: 'success'

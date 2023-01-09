@@ -20,7 +20,7 @@ export const reqInsertNoticeInfo = (data) => request({
 // 请求更新公告内容
 export const reqUpdateNoticeInfo = (data) => request({
     url: `/notice/update`,
-    method: 'post',
+    method: 'put',
     data,
 })
 // 请求删除公告
