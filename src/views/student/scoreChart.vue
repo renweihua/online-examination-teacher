@@ -11,7 +11,7 @@
 
 <script>
 import Chart from '@/components/Charts/mixChart'
-import { reqGetPapersList } from '@/api/student'
+import { getVuePapers } from '@/api/common'
 import { setStore } from '@/utils/mUtils'
 export default {
   name: 'ScoreChart',
@@ -41,9 +41,9 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      const result = await reqGetPapersList()
+      const result = await getVuePapers()
       if (result.http_status === 200) {
-        this.paperNameOptions = result.data.papersList
+        this.paperNameOptions = result.data
       }
       // 延迟0秒等待请求数据
       setTimeout(() => {
